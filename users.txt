@@ -1,0 +1,3 @@
+John,Doe,john@example.com,HI123456
+Deshan,Sandeep,Sandeep@my.sliit.lk,123123
+Shatish,Dileepa,dileepz@ex.com,123123

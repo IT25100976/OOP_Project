@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart | GroceryBasket eCommerce</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nice-select/nice-select.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nouislider/nouislider.min.css">
+    <link rel="stylesheet" href="./assets/plugin/slick/slick.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+     <!-- Header Section Start -->
+     <header class="navigation shadow-sm border-bottom">
+        <!-- Navbar Sticky -->
+        <div class="navbar-sticky">
+            <!-- Navbar -->
+            <div class="navbar navbar-middle navbar-expand-lg mt-lg-3 ">
+                <div class="container">
+                    <!-- Logo -->
+                    <a class="navbar-brand flex-shrink-0 " href="index.html">
+                        <img src="./assets/images/logo.png" class="logo main-logo" alt="eCommerce HTML Template"></a>
+                    <!-- Logo -->
+                    <!-- Search -->
+                    <div class="input-group d-none d-lg-flex me-5">
+                        <input id="searchInput" class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                        <select id="searchSelect" class="form-select flex-shrink-0" style="max-width: 11rem;">
+                            <option>All categories</option>
+                            <option>Fruits & Vegetables</option>
+                            <option>Cuts & Sprouts</option>
+                            <option>Exotic Fruits</option>
+                            <option>Flower Bouquets</option>
+                            <option>Fresh Fruits</option>
+                            <option>Herbs & Seasonings</option>
+                            <option>Organic Fruits</option>
+                            <option>Fresh Vegetables</option>
+                        </select>
+                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block">Search</button>
+                    </div>
+                    <!-- Search -->
+                    <!-- Navbar Actions -->
+                
+                    <div class="list-inline  d-flex">
+                        <div class="list-inline-item me-4">
+                            <a href="login.html" class="text-muted">
+                                <i class="bi bi-person"></i>
+                            </a>
+                        </div>
+                        <div class="list-inline-item me-4">
+                            <a href="wishlist.html" class="text-muted position-relative">
+                                <i class="bi bi-heart"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                    5
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="list-inline-item me-4">
+                            <a class="text-muted position-relative" href="cart.html">
+                                <i class="bi bi-cart"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                    1
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="list-inline-item d-inline-block d-lg-none">
+                            <button class="navbar-toggler border-0 collapsed" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#navbar-default" aria-controls="navbar-default"
+                                aria-label="Toggle navigation">
+                                <i class="bi bi-text-indent-left"></i>
+                        </div>
+                    </div>
+                    <!-- Navbar Actions -->
+                </div>
+            </div>
+            <!-- Navbar -->
+            <!-- Navs -->
+            <nav class="navbar navbar-expand-lg navbar-light navbar-default py-lg-2 py-md-0 py-0 py-sm-0  bg-color mt-lg-3" aria-label="Offcanvas navbar large">
+                <div class="container">
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
+                        <div class="offcanvas-header pb-1">
+                            <a href="index.html"><img src="./assets/images/logo.png" class="logo" alt="eCommerce HTML Template"></a>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="d-block d-lg-none mb-4">
+                                <div class="input-group  me-5">
+                                    <input id="searchInput" class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                                    <select id="searchSelect" class="form-select flex-shrink-0" style="max-width: 11rem;">
+                                        <option>All categories</option>
+                                        <option>Fruits & Vegetables</option>
+                                        <option>Notebooks</option>
+                                        <option>Smartphones</option>
+                                        <option>TV, Monitors</option>
+                                        <option>Cameras</option>
+                                        <option>Headphones</option>
+                                        <option>Headsets</option>
+                                        <option>Printers</option>
+                                        <option>Consoles</option>
+                                        <option>Games</option>
+                                        <option>Storage</option>
+                                    </select>
+                                    <button type="button" class="btn btn-primary bg-gradient">Search</button>
+                                </div>
+                            </div>
+                            <div>
+                                <ul class="navbar-nav align-items-center">
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link" href="index.html">Home</a>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="shop.html">Shop Page - Filter</a></li>
+                                            <li><a class="dropdown-item" href="shop-single.html">Shop Single</a></li>
+                                            <li><a class="dropdown-item" href="wishlist.html">Shop Wishlist</a></li>
+                                            <li><a class="dropdown-item" href="cart.html">Shop Cart</a></li>
+                                            <li><a class="dropdown-item" href="checkout.html">Shop Checkout</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mega menu</a>
+                                        <div class="dropdown-menu pb-0">
+                                            <div class="row p-2 p-lg-4">
+                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                    <h6 class="text-primary ps-3">Fruits & Vegetables</h6>
+                                                    <a class="dropdown-item" href="#">Cuts & Sprouts</a>
+                                                    <a class="dropdown-item" href="#">Exotic Fruits & Veggies</a>
+                                                    <a class="dropdown-item" href="#">Flower Bouquets, Bunches</a>
+                                                    <a class="dropdown-item" href="#">Fresh Fruits</a>
+                                                    <a class="dropdown-item" href="#">Fresh Vegetables</a>
+                                                    <a class="dropdown-item" href="#">Herbs & Seasonings</a>
+                                                    <a class="dropdown-item" href="#">Organic Fruits</a>
+                                                    <a class="dropdown-item" href="#">Organic Vegetables</a>
+                                                </div>
+                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                    <h6 class="text-primary ps-3">Foodgrains, Oil & Masala</h6>
+                                                    <a class="dropdown-item" href="#">Atta, Flours & Sooji</a>
+                                                    <a class="dropdown-item" href="#">Dals & Pulses</a>
+                                                    <a class="dropdown-item" href="#">Dry Fruits</a>
+                                                    <a class="dropdown-item" href="#">Edible Oils & Ghee</a>
+                                                    <a class="dropdown-item" href="#">Masalas & Spices</a>
+                                                    <a class="dropdown-item" href="#">Organic Staples</a>
+                                                    <a class="dropdown-item" href="#">Rice & Rice Products</a>
+                                                    <a class="dropdown-item" href="#">Salt, Sugar & Jaggery</a>
+                                                </div>
+                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                    <h6 class="text-primary ps-3">Bakery, Cakes & Dairy</h6>
+                                                    <a class="dropdown-item" href="#">Appliances & Electricals</a>
+                                                    <a class="dropdown-item" href="#">Breads & Buns</a>
+                                                    <a class="dropdown-item" href="#">Cakes & Pastries</a>
+                                                    <a class="dropdown-item" href="#">Cookies, Rusk & Khari</a>
+                                                    <a class="dropdown-item" href="#">Dairy</a>
+                                                    <a class="dropdown-item" href="#">Gourmet Breads</a>
+                                                    <a class="dropdown-item" href="#">Ice Creams & Desserts</a>
+                                                    <a class="dropdown-item" href="#">Non Dairy</a>
+                                                </div>
+                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0 menu-offer">
+                                                    <div class="position-relative shine">
+                                                        <img src="./assets/images/category/special-offer.png" class="rounded w-100" alt="eCommerce HTML Template">
+                                                        <div class="position-absolute ps-6 mt-8 top-0 p-4">
+                                                            <h5 class="mb-0">
+                                                                Dont miss this
+                                                                <br>
+                                                                offer today.
+                                                            </h5>
+                                                            <a href="#" class="btn btn-cart btn-sm mt-3">Shop Now</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                                            <li><a class="dropdown-item" href="blog-single.html">Blog Single</a>
+                                            </li>
+                                            <li><a class="dropdown-item" href="about.html">About us</a></li>
+                                            <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="login.html">Sign in</a></li>
+                                                <li><a class="dropdown-item" href="signup.html">Signup</a></li>
+                                                <li><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
+                                            </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navs -->
+        </div>
+        <!-- Navbar Sticky -->
+    </header>
+<!-- Header Section End -->
+
+    <main>
+        <!-- section-->
+         <div class="product-wishlist">
+            <div class="mt-4">
+                <div class="container">
+                   <!-- row -->
+                   <div class="row">
+                      <!-- col -->
+                      <div class="col-12">
+                         <!-- breadcrumb -->
+                         <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0">
+                               <li class="breadcrumb-item"><a href="#!">Home</a></li>
+                               <li class="breadcrumb-item"><a href="#!">Shop</a></li>
+                               <li class="breadcrumb-item active" aria-current="page">My Cart</li>
+                            </ol>
+                         </nav>
+                      </div>
+                   </div>
+                </div>
+             </div>
+             <!-- section -->
+             <section class="mt-5 mb-5">
+                <div class="container">
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="col-lg-10">
+                            <div class="p-5">
+                                <div class="d-flex justify-content-between align-items-center mb-5">
+                                    <h1 class="fw-bold mb-0 text-black text-uppercase">My Cart</h1>
+                                    <h5 class="mb-0  fw-bold border py-2 px-4 text-muted">2 Items</h5>
+                                </div>
+                                <hr class="my-4">
+                                <div class="table-responsive cart-container">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th scope="col"></th>
+                                          <th scope="col">Product</th>
+                                          <th scope="col">Price</th>
+                                          <th scope="col">Quantity</th>
+                                          <th scope="col">Total</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <th scope="row" class="align-middle" width="20%">
+                                           <a href="#" class="text-muted me-3 remove-item" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                            </a>
+                                            <a href="#">
+                                                <img src="./assets/images/product/Apple-first.png" class="img-fluid rounded-3" width="100" alt="Apple-first">
+                                            </a>
+                                          </th>
+                                          <td class="align-middle" width="30%">
+                                            <a href="#" class="text-black">Apple</a></td>
+                                          <td class="align-middle" width="15%">$10.00</td>
+                                          <td class="align-middle" width="20%">
+                                            <div class="qty-container">
+                                                <button class="qty-btn-minus count-decreament" type="button"><i class="bi bi-dash"></i></button>
+                                                <input type="number" name="qty" value="1" class="input-qty input-cornered"/>
+                                                <button class="qty-btn-plus count-increament" type="button"><i class="bi bi-plus"></i></button>
+                                            </div>
+                                          </td>
+                                          <td class="align-middle" width="15%">$20.00</td>
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                  </div>
+
+
+                                <div class="col-md-4 ms-auto">
+                                      <div class="mt-2">
+                                        <table class="table">
+                                            <tr>
+                                                <td>Subtotal</td>
+                                                <td class="text-right">$100</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Discount</td>
+                                                <td class="text-right">$10</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Shipping Fee</td>
+                                                <td class="text-right">$10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold">Total</td>
+                                                <td class="text-right fw-bold">$110</td>
+                                            </tr>
+                                         </table>
+                                      </div>
+                                      <div class="checkout-btn mt-5">
+                                        <a href="checkout.html" class="btn btn-primary btn-lg w-100">Continue to checkout</a>
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </section>
+         </div>
+     </main>
+   
+     <!-- Footer Section -->
+     <footer class="mt-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-md-0">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-12">
+                            <div class="footer_logo">
+                                <img loading="lazy" src="./assets/images/logo.png" class="logo" alt="easy shop">
+                            </div>
+                            <div class="mt-4">
+                                <p>Lorem ipsum, or lipsum as it is sometimes kno wn, is dummy text used in laying out print, gra phic or web designs the passage.</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-12">
+                            <div class="footer_newsletter pe-lg-5">
+                                <h4 class="text-uppercase">Newsletter</h4>
+                                <div class="input-group">
+                                    <input id="searchInput" class="form-control w-50" type="text" placeholder="Your email address">
+                                    <button type="button" class="btn btn-primary bg-gradient">Subscribe</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-3 mb-md-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="footer_menu">
+                                <h4 class="footer_title">My Account</h4>
+                                <ul class="m-0 p-0 list-unstyled">
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Wishlist</a></li>
+                                    <li><a href="#">Track Order</a></li>
+                                    <li><a href="#">Manage Account</a></li>
+                                </ul>
+                               
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="footer_menu">
+                                <h4 class="footer_title">Information</h4>
+                                <ul class="m-0 p-0 list-unstyled">
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Return Policy</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer_download">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-12">
+                                <h4 class="footer_title">Contact</h4>
+                                <div class="footer_contact">
+                                    <p>
+                                        <span class="icn"><i class="bi bi-geo-alt"></i></span>
+                                        Widgetify Inc. <br>
+                                        456 Gadget Avenue 
+                                        Techtown, TX 67890 <br>
+                                        United States of America
+                                    </p>
+                                    <p class="phn">
+                                        <span class="icn"><i class="bi bi-telephone"></i></span>
+                                        (987) 654-3210, (555) 123-4567
+                                    </p>
+                                    <p class="eml">
+                                        <span class="icn"><i class="bi bi-envelope"></i></span>
+                                        info@example.com
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="footer_social col-lg-6 col-lg-12">
+                                <div class="footer_icon d-flex mt-1">
+                                    <a href="#" class="facebook pe-3"><i class="bi bi-facebook"></i></a>
+                                    <a href="#" class="twitter pe-3"><i class="bi bi-twitter"></i></a>
+                                    <a href="#" class="instagram pe-3"><i class="bi bi-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End Footer Section -->
+    <script src="./assets/js/jquery-3.6.0.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/js/jquery.ez-plus.js"></script>
+    <script src="./assets/plugin/nice-select/jquery.nice-select.min.js"></script>
+    <script src="./assets/plugin/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
+    <script src="./assets/plugin/nouislider/nouislider.min.js"></script>
+    <script src="./assets/plugin/slick/slick.min.js"></script>
+    <script src="./assets/js/timer.js"></script>
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>
