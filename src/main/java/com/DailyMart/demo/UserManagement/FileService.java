@@ -1,4 +1,4 @@
-package com.DailyMart.demo.Signup;
+package com.DailyMart.demo.UserManagement;
 //This class handles the "Database" logic (writing to the text file)
 import org.springframework.stereotype.Service;
 import java.io.BufferedWriter;
@@ -15,7 +15,7 @@ public class FileService {
     private final String FILE_PATH = "users.txt";
 
     public void saveUser(User user) throws IOException {
-        // Construct a line: firstName,lastName,email,password
+        // Construct a line: firstName,lastName,email,password like wise
         String userData = user.getFirstName() + "," +
                 user.getLastName() + "," +
                 user.getEmail() + "," +

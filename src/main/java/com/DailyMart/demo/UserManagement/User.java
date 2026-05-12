@@ -1,4 +1,4 @@
-package com.DailyMart.demo.Signup;
+package com.DailyMart.demo.UserManagement;
 
 public class User {
     private String firstName;

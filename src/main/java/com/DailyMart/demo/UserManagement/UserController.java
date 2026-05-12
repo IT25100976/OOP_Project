@@ -1,11 +1,10 @@
-package com.DailyMart.demo.Signup;
+package com.DailyMart.demo.UserManagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/api")
@@ -47,18 +46,25 @@ public class UserController {
     }
 
     //allow users to set their own password during a reset
+
+    //@PostMapping("/reset-password"):: when someone send data to /api/reset-password URL tells spring boot to run this method
+    //@RequestBody User request :: this contains the email and new password
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody User request) {
         try {
-            List<User> allUsers = fileService.getAllUsers();
+            List<User> allUsers = fileService.getAllUsers(); //take everyone into a java list from the file
             boolean userFound = false;
 
             for (User u : allUsers) {
                 // Find the user by email
-                if (u.getEmail().equalsIgnoreCase(request.getEmail())) {
+                if (u.getEmail().equalsIgnoreCase(request.getEmail())) {//request.getEmail() :: when user clicks the reset password and input data their browser send a package of infor to your backend
+                    //in my code pakage is caught by variable request.(it comes from @RequestBody)
+
                     // Update: Use the password provided by the user in the form
-                    u.setPassword(request.getPassword());
-                    userFound = true;
+                    u.setPassword(request.getPassword());//program goes to the request object then call the getPassword() to grab the new password
+                    //now with the existing password get replace with grabbed password by u.setPassword method
+                    //here the password only changed in Ram memo..thats wht i call fileService.saveAllUsers(allUsers)
+                    userFound = true; //once you found the user email in the java list we stop searching
                     break;
                 }
             }
