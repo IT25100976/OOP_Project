@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyMart - Add Product</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">DailyMart Admin</div>
+        <nav>
+            <a href="index.html" style="margin-right: 1.5rem; color: #10b981;">⬅ Storefront</a>
+            <a href="admin.html">Dashboard</a>
+            <a href="addProduct.html" class="active">Add Product</a>
+            <a href="productListing.html">View Inventory</a>
+            <a href="productSearch.html">Search</a>
+        </nav>
+    </header>
+
+    <main class="animate-fade">
+        <h1 class="page-title">Add New Product</h1>
+        
+        <div class="card" style="max-width: 600px; margin: 0 auto;">
+            <form id="addProductForm" onsubmit="submitForm(event)">
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" id="name" required placeholder="e.g. Organic Apples">
+                </div>
+
+                <div class="form-group">
+                    <label for="price">Price ($)</label>
+                    <input type="number" step="0.01" id="price" required placeholder="e.g. 2.99">
+                </div>
+
+                <div class="form-group">
+                    <label for="stock">Initial Stock</label>
+                    <input type="number" id="stock" required placeholder="e.g. 100">
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Product Type</label>
+                    <select id="category" onchange="toggleCategoryFields()" required>
+                        <option value="" disabled selected>Select Type...</option>
+                        <option value="Fresh" data-type="Fresh">Fresh (By Weight)</option>
+                        <option value="Packaged" data-type="Packaged">Packaged (With Expiry)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="freshField" style="display: none;">
+                    <label for="weight">Weight (kg)</label>
+                    <input type="number" step="0.01" id="weight" placeholder="e.g. 1.5">
+                </div>
+
+                <div class="form-group" id="packagedField" style="display: none;">
+                    <label for="expiry">Expiry Date</label>
+                    <input type="date" id="expiry">
+                </div>
+
+                <button type="submit" style="width: 100%;">Add Product to System</button>
+            </form>
+        </div>
+    </main>
+
+    <div id="notification"></div>
+
+    <script>
+        function toggleCategoryFields() {
+            const select = document.getElementById('category');
+            const selectedOption = select.options[select.selectedIndex];
+            const type = selectedOption ? selectedOption.getAttribute('data-type') : '';
+            
+            document.getElementById('freshField').style.display = (type === 'Fresh') ? 'block' : 'none';
+            document.getElementById('packagedField').style.display = (type === 'Packaged') ? 'block' : 'none';
+        }
+
+        async function submitForm(e) {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button');
+            const select = document.getElementById('category');
+            const selectedOption = select.options[select.selectedIndex];
+            const type = selectedOption.getAttribute('data-type');
+            const categoryValue = select.value;
+
+            const originalText = btn.innerText;
+            btn.innerText = 'Adding...';
+            btn.disabled = true;
+
+            const endpoint = type === 'Fresh' ? '/api/products/fresh' : '/api/products/packaged';
+
+            const payload = {
+                name: document.getElementById('name').value,
+                category: categoryValue,
+                price: parseFloat(document.getElementById('price').value),
+                stock: parseInt(document.getElementById('stock').value)
+            };
+
+            if (type === 'Fresh') {
+                payload.weight = parseFloat(document.getElementById('weight').value);
+            } else {
+                payload.expiryDate = document.getElementById('expiry').value;
+            }
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    showNotification('Product added successfully!');
+                    document.getElementById('addProductForm').reset();
+                    toggleCategoryFields();
+                } else {
+                    const err = await response.text();
+                    showNotification('Error: ' + err, true);
+                }
+            } catch (err) {
+                showNotification('Network error. Is server running?', true);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function showNotification(msg, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.innerText = msg;
+            notif.className = isError ? 'error show' : 'show';
+            setTimeout(() => { notif.className = ''; }, 3000);
+        }
+    </script>
+</body>
+</html>

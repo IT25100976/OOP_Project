@@ -42,7 +42,7 @@
                             <option>Organic Fruits</option>
                             <option>Fresh Vegetables</option>
                         </select>
-                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block">Search</button>
+                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block" onclick="storefrontSearch(this)">Search</button>
                     </div>
                     <!-- Search -->
                     <!-- Navbar Actions -->
@@ -110,7 +110,7 @@
                                         <option>Games</option>
                                         <option>Storage</option>
                                     </select>
-                                    <button type="button" class="btn btn-primary bg-gradient">Search</button>
+                                    <button type="button" class="btn btn-primary bg-gradient" onclick="storefrontSearch(this)">Search</button>
                                 </div>
                             </div>
                             <div>
@@ -199,6 +199,15 @@
                                                 <li><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
                                             </ul>
                                     </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="admin.html">Dashboard</a></li>
+                                                <li><a class="dropdown-item" href="productListing.html">View Inventory</a></li>
+                                                <li><a class="dropdown-item" href="addProduct.html">Add Product</a></li>
+                                                <li><a class="dropdown-item" href="productSearch.html">Search Product</a></li>
+                                            </ul>
+                                    </li>
                                     
                                 </ul>
                             </div>
@@ -212,6 +221,24 @@
     </header>
     <!-- Header Section End -->
     
+    <script>
+        /**
+         * Global Search Function:
+         * Captures the user's text input and redirects them to the dedicated Shop page
+         * with the search keyword attached as a URL parameter.
+         */
+        function storefrontSearch(btn) {
+            // Find the sibling input field within the same parent container
+            const input = btn.parentElement.querySelector('input');
+            const keyword = input.value.trim();
+            
+            if (keyword) {
+                // Redirect to shop.html using the 'search' query parameter
+                window.location.href = 'shop.html?search=' + encodeURIComponent(keyword);
+            }
+        }
+    </script>
+
     <!-- Banner Slider -->
         <div class="banner py-4">
             <div class="container">
@@ -381,8 +408,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$12.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 12.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -422,8 +449,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$8.00</span>
-                                                <span class="text-muted strike-through"><s>$9.00</s></span>
+                                                <span class="sell-price">Rs 8.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 9.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -463,8 +490,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$9.00</span>
-                                                <span class="text-muted strike-through"><s>$10.00</s></span>
+                                                <span class="sell-price">Rs 9.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 10.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -505,8 +532,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$30.00</span>
-                                                <span class="text-muted strike-through"><s>$35.00</s></span>
+                                                <span class="sell-price">Rs 30.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 35.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -546,8 +573,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$4.00</span>
-                                                <span class="text-muted strike-through"><s>$6.00</s></span>
+                                                <span class="sell-price">Rs 4.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 6.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -587,8 +614,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$6.00</span>
-                                                <span class="text-muted strike-through"><s>$7.00</s></span>
+                                                <span class="sell-price">Rs 6.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 7.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -628,8 +655,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$8.00</span>
-                                                <span class="text-muted strike-through"><s>$9.00</s></span>
+                                                <span class="sell-price">Rs 8.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 9.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -669,8 +696,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$3.00</span>
-                                                <span class="text-muted strike-through"><s>$5.00</s></span>
+                                                <span class="sell-price">Rs 3.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 5.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -719,8 +746,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$6.00</span>
-                                                <span class="text-muted strike-through"><s>$8.00</s></span>
+                                                <span class="sell-price">Rs 6.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 8.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -760,8 +787,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$12.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 12.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -801,8 +828,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$14.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 14.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -842,8 +869,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$8.00</span>
-                                                <span class="text-muted strike-through"><s>$9.00</s></span>
+                                                <span class="sell-price">Rs 8.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 9.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -883,8 +910,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$21.00</span>
-                                                <span class="text-muted strike-through"><s>$24.00</s></span>
+                                                <span class="sell-price">Rs 21.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 24.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -924,8 +951,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$17.00</span>
-                                                <span class="text-muted strike-through"><s>$18.00</s></span>
+                                                <span class="sell-price">Rs 17.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 18.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -965,8 +992,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$12.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 12.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1006,8 +1033,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$16.00</span>
-                                                <span class="text-muted strike-through"><s>$18.00</s></span>
+                                                <span class="sell-price">Rs 16.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 18.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1056,8 +1083,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$13.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 13.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1097,8 +1124,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$9.00</span>
-                                                <span class="text-muted strike-through"><s>$10.00</s></span>
+                                                <span class="sell-price">Rs 9.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 10.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1138,8 +1165,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$18.00</span>
-                                                <span class="text-muted strike-through"><s>$19.00</s></span>
+                                                <span class="sell-price">Rs 18.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 19.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1179,8 +1206,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$17.00</span>
-                                                <span class="text-muted strike-through"><s>$18.00</s></span>
+                                                <span class="sell-price">Rs 17.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 18.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1220,8 +1247,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$11.00</span>
-                                                <span class="text-muted strike-through"><s>$13.00</s></span>
+                                                <span class="sell-price">Rs 11.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 13.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1261,8 +1288,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$13.00</span>
-                                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                                <span class="sell-price">Rs 13.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1303,8 +1330,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$6.00</span>
-                                                <span class="text-muted strike-through"><s>$7.00</s></span>
+                                                <span class="sell-price">Rs 6.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 7.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1344,8 +1371,8 @@
                                                 </small>
                                             </div>
                                             <div class="d-block">
-                                                <span class="sell-price">$6.00</span>
-                                                <span class="text-muted strike-through"><s>$9.00</s></span>
+                                                <span class="sell-price">Rs 6.00</span>
+                                                <span class="text-muted strike-through"><s>Rs 9.00</s></span>
                                             </div>
                                         </div>
                                         <div class="product-footer">
@@ -1418,8 +1445,8 @@
                                 </small>
                             </div>
                             <div class="d-block">
-                                <span class="sell-price">$12.00</span>
-                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                <span class="sell-price">Rs 12.00</span>
+                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                             </div>
                         </div>
                         <div class="product-footer">
@@ -1457,8 +1484,8 @@
                                 </small>
                             </div>
                             <div class="d-block">
-                                <span class="sell-price">$9.00</span>
-                                <span class="text-muted strike-through"><s>$10.00</s></span>
+                                <span class="sell-price">Rs 9.00</span>
+                                <span class="text-muted strike-through"><s>Rs 10.00</s></span>
                             </div>
                         </div>
                         <div class="product-footer">
@@ -1496,8 +1523,8 @@
                                 </small>
                             </div>
                             <div class="d-block">
-                                <span class="sell-price">$10.00</span>
-                                <span class="text-muted strike-through"><s>$12.00</s></span>
+                                <span class="sell-price">Rs 10.00</span>
+                                <span class="text-muted strike-through"><s>Rs 12.00</s></span>
                             </div>
                         </div>
                         <div class="product-footer">
@@ -1535,8 +1562,8 @@
                                 </small>
                             </div>
                             <div class="d-block">
-                                <span class="sell-price">$12.00</span>
-                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                <span class="sell-price">Rs 12.00</span>
+                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                             </div>
                         </div>
                         <div class="product-footer">
@@ -1574,8 +1601,8 @@
                                 </small>
                             </div>
                             <div class="d-block">
-                                <span class="sell-price">$12.00</span>
-                                <span class="text-muted strike-through"><s>$15.00</s></span>
+                                <span class="sell-price">Rs 12.00</span>
+                                <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                             </div>
                         </div>
                         <div class="product-footer">
@@ -1731,7 +1758,7 @@
                         </div>
                         <div class="feature-info pt-3 ps-2">
                             <h4>Free Shipping</h4>
-                            <p>On orders over&nbsp;<strong>$50.</strong></p>
+                            <p>On orders over&nbsp;<strong>Rs 50.</strong></p>
                         </div>
                       </div>
                     </div>

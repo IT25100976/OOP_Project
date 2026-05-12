@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyMart - Inventory Listing</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .edit-fields { display: none; margin-top: 1rem; }
+        .edit-fields input { padding: 0.5rem; margin-bottom: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">DailyMart Admin</div>
+        <nav>
+            <a href="index.html" style="margin-right: 1.5rem; color: #10b981;">⬅ Storefront</a>
+            <a href="admin.html">Dashboard</a>
+            <a href="addProduct.html">Add Product</a>
+            <a href="productListing.html" class="active">View Inventory</a>
+            <a href="productSearch.html">Search</a>
+        </nav>
+    </header>
+
+    <main class="animate-fade">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h1 class="page-title" style="margin-bottom:0;">Live Inventory</h1>
+            <button onclick="fetchProducts()">Refresh Data</button>
+        </div>
+        
+        <div class="product-grid" id="productContainer" style="margin-top: 2rem;">
+            <!-- Rendered by JS -->
+        </div>
+    </main>
+
+    <div id="notification"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", fetchProducts);
+
+        async function fetchProducts() {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Loading...</p>';
+            
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                
+                if (products.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No products found in the database.</p>';
+                } else {
+                    container.innerHTML = products.map(p => `
+                        <div class="product-item" id="item-${p.id}">
+                            <div class="badge ${p.category === 'Fresh' ? 'fresh' : (p.category === 'Packaged' ? 'packaged' : '')}">${p.category}</div>
+                            <h3 class="product-title">${p.name}</h3>
+                            <p class="product-meta">Ref: ${p.id}</p>
+                            <p><strong>Price:</strong> $<span id="price-lbl-${p.id}">${p.price.toFixed(2)}</span></p>
+                            <p><strong>Stock:</strong> <span id="stock-lbl-${p.id}">${p.stock}</span> units</p>
+                            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:0.5rem;">
+                                ${p.category === 'Fresh' ? 'Weight: '+p.weight+'kg' : 'Expiry: '+p.expiryDate}
+                            </p>
+                            
+                            <div class="product-actions" style="margin-top: 1rem;">
+                                <button onclick="toggleEdit('${p.id}')">Edit</button>
+                                <button class="danger" onclick="deleteProduct('${p.id}')">Delete</button>
+                            </div>
+
+                            <div class="edit-fields" id="edit-${p.id}">
+                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" placeholder="New Price">
+                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" placeholder="New Stock">
+                                <button onclick="saveEdit('${p.id}')" style="width:100%; padding: 0.5rem;">Save Changes</button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch(e) {
+                container.innerHTML = '<p style="text-align:center; color: var(--danger); grid-column: 1/-1;">Error connecting to backend API.</p>';
+            }
+        }
+
+        function toggleEdit(id) {
+            const el = document.getElementById(`edit-${id}`);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
+
+        async function saveEdit(id) {
+            const newPrice = document.getElementById(`edit-price-${id}`).value;
+            const newStock = document.getElementById(`edit-stock-${id}`).value;
+
+            try {
+                const res = await fetch(`/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ price: parseFloat(newPrice), stock: parseInt(newStock) })
+                });
+
+                if (res.ok) {
+                    showNotification('Updated successfully!');
+                    document.getElementById(`price-lbl-${id}`).innerText = parseFloat(newPrice).toFixed(2);
+                    document.getElementById(`stock-lbl-${id}`).innerText = newStock;
+                    toggleEdit(id);
+                } else {
+                    showNotification('Update failed.', true);
+                }
+            } catch(e) {
+                showNotification('Network error.', true);
+            }
+        }
+
+        async function deleteProduct(id) {
+            if(!confirm('Are you sure you want to delete this product?')) return;
+            
+            try {
+                const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+                if(res.ok) {
+                    showNotification('Product deleted');
+                    document.getElementById(`item-${id}`).remove();
+                } else {
+                    showNotification('Delete failed.', true);
+                }
+            } catch(e) {
+                showNotification('Network error.', true);
+            }
+        }
+
+        function showNotification(msg, isError = false) {
+            const notif = document.getElementById('notification');
+            notif.innerText = msg;
+            notif.className = isError ? 'error show' : 'show';
+            setTimeout(() => { notif.className = ''; }, 3000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | GroceryBasket eCommerce</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nice-select/nice-select.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nouislider/nouislider.min.css">
+    <link rel="stylesheet" href="./assets/plugin/slick/slick.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+    <!-- Header Section Start -->
+    <header class="navigation shadow-sm border-bottom">
+        <div class="navbar-sticky">
+            <div class="navbar navbar-middle navbar-expand-lg mt-lg-3 ">
+                <div class="container">
+                    <a class="navbar-brand flex-shrink-0 " href="index.html">
+                        <img src="./assets/images/logo.png" class="logo main-logo" alt="eCommerce HTML Template"></a>
+                    
+                    <div class="input-group d-none d-lg-flex me-5">
+                        <input id="searchInput" class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                        <select id="searchSelect" class="form-select flex-shrink-0" style="max-width: 11rem;">
+                            <option>All categories</option>
+                            <option>Fruits & Vegetables</option>
+                            <option>Fresh Fruits</option>
+                            <option>Fresh Vegetables</option>
+                        </select>
+                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block" onclick="storefrontSearch(this)">Search</button>
+                    </div>
+
+                    <div class="list-inline  d-flex">
+                        <div class="list-inline-item me-4"><a href="login.html" class="text-muted"><i class="bi bi-person"></i></a></div>
+                        <div class="list-inline-item me-4"><a href="wishlist.html" class="text-muted position-relative"><i class="bi bi-heart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">5</span></a></div>
+                        <div class="list-inline-item me-4"><a class="text-muted position-relative" href="cart.html"><i class="bi bi-cart"></i><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">1</span></a></div>
+                        <div class="list-inline-item d-inline-block d-lg-none">
+                            <button class="navbar-toggler border-0 collapsed" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbar-default" aria-controls="navbar-default" aria-label="Toggle navigation"><i class="bi bi-text-indent-left"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navs -->
+            <nav class="navbar navbar-expand-lg navbar-light navbar-default py-lg-2 py-md-0 py-0 py-sm-0  bg-color mt-lg-3" aria-label="Offcanvas navbar large">
+                <div class="container">
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default" aria-labelledby="navbar-defaultLabel">
+                        <div class="offcanvas-header pb-1">
+                            <a href="index.html"><img src="./assets/images/logo.png" class="logo" alt="eCommerce HTML Template"></a>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="d-block d-lg-none mb-4">
+                                <div class="input-group  me-5">
+                                    <input id="searchInputMobile" class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                                    <select class="form-select flex-shrink-0" style="max-width: 11rem;"><option>All categories</option></select>
+                                    <button type="button" class="btn btn-primary bg-gradient" onclick="storefrontSearch(this)">Search</button>
+                                </div>
+                            </div>
+                            <div>
+                                <ul class="navbar-nav align-items-center">
+                                    <li class="nav-item dropdown w-100 w-lg-auto"><a class="nav-link" href="index.html">Home</a></li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                        <ul class="dropdown-menu"><li><a class="dropdown-item" href="shop.html">Shop Page - Filter</a></li></ul>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                                        <ul class="dropdown-menu"><li><a class="dropdown-item" href="about.html">About us</a></li><li><a class="dropdown-item" href="contact.html">Contact</a></li></ul>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="login.html">Sign in</a></li>
+                                                <li><a class="dropdown-item" href="signup.html">Signup</a></li>
+                                            </ul>
+                                    </li>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item active" href="admin.html">Dashboard</a></li>
+                                                <li><a class="dropdown-item" href="productListing.html">View Inventory</a></li>
+                                                <li><a class="dropdown-item" href="addProduct.html">Add Product</a></li>
+                                                <li><a class="dropdown-item" href="productSearch.html">Search Product</a></li>
+                                            </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <main>
+        <div class="mt-4">
+           <div class="container">
+              <div class="row">
+                 <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                       <ol class="breadcrumb mb-0">
+                          <li class="breadcrumb-item"><a href="index.html">Storefront</a></li>
+                          <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                       </ol>
+                    </nav>
+                 </div>
+              </div>
+           </div>
+        </div>
+
+        <div class="mt-5 mb-5 pt-4 pb-5">
+            <div class="container">
+                <!-- Attractive Banner -->
+                <div class="p-5 mb-5 rounded-4 shadow-sm position-relative overflow-hidden" style="background: linear-gradient(135deg, #81DA5B 0%, #4CAF50 100%); color: white;">
+                    <div class="position-relative" style="z-index: 1;">
+                        <h1 class="display-4 fw-bold mb-3 text-white">Admin Dashboard</h1>
+                        <p class="lead mb-0 text-white-50" style="max-width: 600px;">Welcome to the DailyMart product management center. Easily control your inventory and storefront displays from one central location.</p>
+                    </div>
+                    <!-- Decorative background icon -->
+                    <i class="bi bi-shop position-absolute text-white" style="font-size: 15rem; right: 5%; bottom: -20%; opacity: 0.15; transform: rotate(-10deg);"></i>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 text-center rounded-4 overflow-hidden" style="cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); background: #ffffff;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(129, 218, 91, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.05)';" onclick="location.href='addProduct.html'">
+                            <div class="card-body p-5">
+                                <div class="icon-circle mb-4 mx-auto d-flex align-items-center justify-content-center rounded-circle" style="width: 90px; height: 90px; background: rgba(129, 218, 91, 0.15);">
+                                    <i class="bi bi-box-seam" style="font-size: 2.5rem; color: #4CAF50;"></i>
+                                </div>
+                                <h4 class="card-title fw-bold text-dark">Add New Product</h4>
+                                <p class="text-muted mb-0 mt-3" style="font-size: 0.95rem; line-height: 1.6;">Create fresh or packaged inventory items to instantly display on your active storefront.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 text-center rounded-4 overflow-hidden" style="cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); background: #ffffff;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(129, 218, 91, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.05)';" onclick="location.href='productListing.html'">
+                            <div class="card-body p-5">
+                                <div class="icon-circle mb-4 mx-auto d-flex align-items-center justify-content-center rounded-circle" style="width: 90px; height: 90px; background: rgba(129, 218, 91, 0.15);">
+                                    <i class="bi bi-card-checklist" style="font-size: 2.5rem; color: #4CAF50;"></i>
+                                </div>
+                                <h4 class="card-title fw-bold text-dark">Manage Inventory</h4>
+                                <p class="text-muted mb-0 mt-3" style="font-size: 0.95rem; line-height: 1.6;">View, edit prices, or delete existing stock configurations in the application database.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 text-center rounded-4 overflow-hidden" style="cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.05); transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); background: #ffffff;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 20px 40px rgba(129, 218, 91, 0.2)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.05)';" onclick="location.href='productSearch.html'">
+                            <div class="card-body p-5">
+                                <div class="icon-circle mb-4 mx-auto d-flex align-items-center justify-content-center rounded-circle" style="width: 90px; height: 90px; background: rgba(129, 218, 91, 0.15);">
+                                    <i class="bi bi-search" style="font-size: 2.5rem; color: #4CAF50;"></i>
+                                </div>
+                                <h4 class="card-title fw-bold text-dark">Search Database</h4>
+                                <p class="text-muted mb-0 mt-3" style="font-size: 0.95rem; line-height: 1.6;">Quickly locate products internally by name or category for quick verification.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="mt-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-md-0">
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-12">
+                            <div class="footer_logo">
+                                <img loading="lazy" src="./assets/images/logo.png" class="logo" alt="easy shop">
+                            </div>
+                            <div class="mt-4">
+                                <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-3 mb-md-0">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="footer_menu">
+                                <h4 class="footer_title">Admin Links</h4>
+                                <ul class="m-0 p-0 list-unstyled">
+                                    <li><a href="admin.html">Dashboard</a></li>
+                                    <li><a href="productListing.html">Inventory</a></li>
+                                    <li><a href="addProduct.html">Add Product</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="footer_download">
+                        <div class="row">
+                            <div class="col-lg-6 col-lg-12">
+                                <h4 class="footer_title">Contact</h4>
+                                <div class="footer_contact">
+                                    <p><span class="icn"><i class="bi bi-geo-alt"></i></span>Widgetify Inc. <br>456 Gadget Avenue</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="./assets/js/jquery-3.6.0.min.js"></script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+    <script src="./assets/plugin/nice-select/jquery.nice-select.min.js"></script>
+    <script src="./assets/js/main.js"></script>
+    
+    <script>
+        function storefrontSearch(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const keyword = input.value.trim();
+            if (keyword) {
+                window.location.href = 'shop.html?search=' + encodeURIComponent(keyword);
+            }
+        }
+    </script>
+</body>
+</html>

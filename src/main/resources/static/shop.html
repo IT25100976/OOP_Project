@@ -41,7 +41,7 @@
                             <option>Organic Fruits</option>
                             <option>Fresh Vegetables</option>
                         </select>
-                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block">Search</button>
+                        <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block" onclick="storefrontSearch(this)">Search</button>
                     </div>
                     <!-- Search -->
                     <!-- Navbar Actions -->
@@ -109,7 +109,7 @@
                                         <option>Games</option>
                                         <option>Storage</option>
                                     </select>
-                                    <button type="button" class="btn btn-primary bg-gradient">Search</button>
+                                    <button type="button" class="btn btn-primary bg-gradient" onclick="storefrontSearch(this)">Search</button>
                                 </div>
                             </div>
                             <div>
@@ -415,8 +415,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$13.00</span>
-                                        <span class="text-muted strike-through"><s>$15.00</s></span>
+                                        <span class="sell-price">Rs 13.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -456,8 +456,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$9.00</span>
-                                        <span class="text-muted strike-through"><s>$10.00</s></span>
+                                        <span class="sell-price">Rs 9.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 10.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -497,8 +497,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$18.00</span>
-                                        <span class="text-muted strike-through"><s>$19.00</s></span>
+                                        <span class="sell-price">Rs 18.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 19.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -538,8 +538,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$13.00</span>
-                                        <span class="text-muted strike-through"><s>$15.00</s></span>
+                                        <span class="sell-price">Rs 13.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 15.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -580,8 +580,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$6.00</span>
-                                        <span class="text-muted strike-through"><s>$7.00</s></span>
+                                        <span class="sell-price">Rs 6.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 7.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -621,8 +621,8 @@
                                         </small>
                                     </div>
                                     <div class="d-block">
-                                        <span class="sell-price">$6.00</span>
-                                        <span class="text-muted strike-through"><s>$9.00</s></span>
+                                        <span class="sell-price">Rs 6.00</span>
+                                        <span class="text-muted strike-through"><s>Rs 9.00</s></span>
                                     </div>
                                 </div>
                                 <div class="product-footer">
@@ -766,5 +766,81 @@
     <script src="./assets/plugin/slick/slick.min.js"></script>
     <script src="./assets/js/timer.js"></script>
     <script src="./assets/js/main.js"></script>
+    
+    <script>
+        /**
+         * Global Search Function (also present on index.html for consistency)
+         */
+        function storefrontSearch(btn) {
+            const input = btn.parentElement.querySelector('input');
+            const keyword = input.value.trim();
+            if (keyword) {
+                window.location.href = 'shop.html?search=' + encodeURIComponent(keyword);
+            }
+        }
+
+        /**
+         * Page Initialization Logic:
+         * Checks if a 'search' query parameter is present in the URL.
+         * If found, it fetches matching products from the Spring Boot API and renders them dynamically.
+         */
+        window.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchQuery = urlParams.get('search');
+            const container = document.querySelector('.shop-section .product .row');
+            if (!container) return;
+
+            // Helper function to render product cards
+            const renderProducts = (products, query = '') => {
+                if (products.length === 0) {
+                    container.innerHTML = `<h3 class="text-center w-100" style="margin-top: 2rem;">No products found${query ? ' for "' + query + '"' : ''}</h3>`;
+                } else {
+                    container.innerHTML = products.map(p => `
+                        <div class="col">
+                            <div class="card product-card">
+                                <div class="card-body pt-3 pb-0 text-center">
+                                    <div class="badge ${p.id.startsWith('F') ? 'bg-success' : 'bg-primary'} mb-2 text-white px-2 py-1">${p.category}</div>
+                                    <br>
+                                    <h5 class="card-title text-dark d-inline-block mt-2">${p.name}</h5>
+                                </div>
+                                <div class="product-price px-3 pb-2 text-center">
+                                    <div class="d-block mt-2">
+                                        <span class="sell-price fs-5 fw-bold">Rs ${p.price.toFixed(2)}</span>
+                                    </div>
+                                    <div class="text-muted small mt-1">Stock: ${p.stock}</div>
+                                </div>
+                                <div class="product-footer pb-3 pt-2">
+                                    <button class="btn btn-outline-primary w-100 rounded btn-cart" style="max-width: 90%; margin: 0 auto; display: block;" onclick="alert('Added to Cart!')">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            };
+
+            if (searchQuery) {
+                // 1. Handle SEARCH mode
+                document.querySelectorAll('input[placeholder="Search for products"]').forEach(i => i.value = searchQuery);
+                try {
+                    const res = await fetch(`/api/products/search?keyword=${encodeURIComponent(searchQuery)}`);
+                    const products = await res.json();
+                    renderProducts(products, searchQuery);
+                } catch(e) {
+                    console.error("Error searching products:", e);
+                    container.innerHTML = '<p class="text-center w-100">Error connecting to backend.</p>';
+                }
+            } else {
+                // 2. Handle ALL PRODUCTS mode (Default)
+                try {
+                    const res = await fetch('/api/products');
+                    const products = await res.json();
+                    renderProducts(products);
+                } catch(e) {
+                    console.error("Error loading products:", e);
+                    container.innerHTML = '<p class="text-center w-100">Error connecting to backend.</p>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
