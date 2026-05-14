@@ -47,13 +47,23 @@ public class ProductRepository {
                     double price = Double.parseDouble(data[2]);
                     int stock = Integer.parseInt(data[3]);
                     String category = data[4];
-                    String specific = data[5];
+                    
+                    String imageUrl = "";
+                    String specific = "";
+
+                    if (data.length >= 7) {
+                        imageUrl = data[5].trim();
+                        specific = data[6];
+                    } else {
+                        // Legacy data format
+                        specific = data[5];
+                    }
 
                     // Logic to recreate the correct object type based on ID prefix
                     if (id.startsWith("F")) {
-                        products.add(new FreshProduct(id, name, category, price, stock, Double.parseDouble(specific)));
+                        products.add(new FreshProduct(id, name, category, price, stock, imageUrl, Double.parseDouble(specific)));
                     } else if (id.startsWith("P")) {
-                        products.add(new PackagedProduct(id, name, category, price, stock, specific));
+                        products.add(new PackagedProduct(id, name, category, price, stock, imageUrl, specific));
                     }
                 }
             }

@@ -397,7 +397,7 @@
     <script src="./assets/js/main.js"></script>
     <script>
         /**
-         * Session and API Header Logic (Inlined)
+         * Session and API Header Logic
          */
         function getSessionId() {
             let sessionId = localStorage.getItem('X-User-Id');
@@ -418,7 +418,7 @@
         };
 
         /**
-         * Cart API Logic (Inlined)
+         * Cart UI Logic
          */
         document.addEventListener('DOMContentLoaded', () => {
             loadCart();
@@ -467,14 +467,14 @@
                 <tr>
                     <th scope="row" class="align-middle" width="20%">
                         <button onclick="removeFromCart('${item.id}')" class="btn btn-link text-muted me-3 p-0" title="Remove item"><i class="bi bi-trash"></i></button>
-                        <img src="${item.imageUrl}" class="img-fluid rounded-3" width="80" alt="${item.name}">
+                        <img src="${item.imageUrl || './assets/images/product/Apple-first.png'}" class="img-fluid rounded-3" width="80" alt="${item.name}">
                     </th>
                     <td class="align-middle" width="30%"><span class="text-black fw-semibold">${item.name}</span></td>
-                    <td class="align-middle" width="15%">Rs ${item.price}</td>
+                    <td class="align-middle" width="15%">Rs ${item.price.toFixed(2)}</td>
                     <td class="align-middle" width="20%">
                         <div class="qty-container">
                             <button class="qty-btn-minus count-decreament" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" type="button"><i class="bi bi-dash"></i></button>
-                            <input type="number" name="qty" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', parseInt(this.value))" class="input-qty input-cornered"/>
+                            <input type="number" name="qty" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', parseInt(this.value))" class="input-qty input-cornered text-center"/>
                             <button class="qty-btn-plus count-increament" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" type="button"><i class="bi bi-plus"></i></button>
                         </div>
                     </td>

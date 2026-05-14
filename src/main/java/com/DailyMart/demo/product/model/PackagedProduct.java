@@ -9,8 +9,8 @@ public class PackagedProduct extends Product {
 
     public PackagedProduct() {}
 
-    public PackagedProduct(String id, String name, String category, double price, int stock, String expiryDate) {
-        super(id, name, category, price, stock);
+    public PackagedProduct(String id, String name, String category, double price, int stock, String imageUrl, String expiryDate) {
+        super(id, name, category, price, stock, imageUrl);
         this.expiryDate = expiryDate;
     }
 
@@ -19,11 +19,14 @@ public class PackagedProduct extends Product {
 
     /**
      * Compiles product data into a format saved in products.txt:
-     * ID,Name,Price,Stock,Category,ExpiryDate
+     * ID,Name,Price,Stock,Category,ImageUrl,ExpiryDate
      */
     @Override
     public String toFileString() {
-        return String.format("%s,%s,%s,%s,%s,%s", getId(), getName(), getPrice(), getStock(), getCategory(), getExpiryDate());
+        return String.format("%s,%s,%s,%s,%s,%s,%s", 
+                getId(), getName(), getPrice(), getStock(), getCategory(), 
+                (getImageUrl() == null || getImageUrl().isEmpty() ? " " : getImageUrl()), 
+                getExpiryDate());
     }
 
     @Override

@@ -208,4 +208,20 @@ public class InventoryController {
         inventoryService.updateCartQuantity(sessionId, id, quantity);
         return ResponseEntity.ok("Cart quantity updated");
     }
+
+    /**
+     * DELETE /api/inventory/cart/clear
+     *
+     * Empties the entire cart for the current session.
+     * → JS: checkout.html → call this after successful /api/orders POST
+     *
+     * @param sessionId  Comes from the "X-User-Id" HTTP header
+     */
+    @DeleteMapping("/cart/clear")
+    public ResponseEntity<String> clearCart(
+            @RequestHeader("X-User-Id") String sessionId) {
+
+        inventoryService.clearCart(sessionId);
+        return ResponseEntity.ok("Cart cleared");
+    }
 }

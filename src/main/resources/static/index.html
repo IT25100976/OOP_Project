@@ -276,6 +276,78 @@
             }).then(() => alert(name + ' added to cart!'))
               .catch(err => console.error(err));
         }
+
+        /**
+         * Dynamic Rendering for Home Page
+         */
+        async function loadDynamicProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                
+                const latestContainer = document.getElementById('latestProducts');
+                const featuredContainer = document.getElementById('featuredProducts');
+                
+                if (latestContainer) {
+                    latestContainer.innerHTML = '';
+                    // Show last 8 products as "Latest"
+                    products.slice(-8).reverse().forEach(p => {
+                        latestContainer.appendChild(createProductCard(p));
+                    });
+                }
+                
+                if (featuredContainer) {
+                    featuredContainer.innerHTML = '';
+                    // Use odd-indexed products or similar logic for Featured
+                    products.filter((p, i) => i % 2 === 0).slice(0, 8).forEach(p => {
+                        featuredContainer.appendChild(createProductCard(p));
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to load products:", err);
+            }
+        }
+
+        function createProductCard(p) {
+            const col = document.createElement('div');
+            col.className = 'col';
+            
+            const img = (p.imageUrl && p.imageUrl.trim()) ? p.imageUrl : './assets/images/product/Cauliflower-first.png';
+            const stockStatus = p.stock <= 0 ? 
+                '<span class="badge bg-danger">Out of Stock</span>' : 
+                (p.stock < 10 ? `<span class="badge bg-warning text-dark">Only ${p.stock} left!</span>` : `<span class="badge bg-success">In Stock: ${p.stock}</span>`);
+            
+            col.innerHTML = `
+                <div class="card product-card">
+                    <a href="shop-single.html">
+                        <img src="${img}" class="card-img-top image-first" alt="${p.name}" style="height: 200px; object-fit: cover;">
+                    </a>
+                    <div class="card-body pt-0">
+                        <div class="icons">
+                            <a href="javascript:void(0)" onclick="addToWishlist('${p.id}', '${p.name}', ${p.price}, '${img}')" title="Wishlist"><i class="bi bi-heart"></i></a>
+                            <a href="#" title="Quick view"><i class="bi bi-eye"></i></a>
+                        </div>
+                        <div class="mt-2">${stockStatus}</div>
+                    </div>
+                    <div class="product-price px-3 pb-2 text-center">
+                        <h5 class="card-title fw-bold"><a href="shop-single.html" class="text-decoration-none text-dark">${p.name}</a></h5>
+                        <div class="d-block mt-2">
+                            <span class="sell-price fw-bold text-success fs-5">Rs ${p.price.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <a href="javascript:void(0)" 
+                           onclick="${p.stock > 0 ? `addToCart('${p.id}', '${p.name}', ${p.price}, '${img}')` : 'void(0)'}" 
+                           class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart ${p.stock <= 0 ? 'disabled opacity-50' : ''}">
+                           ${p.stock > 0 ? 'Add to Cart' : 'Sold Out'}
+                        </a>
+                    </div>
+                </div>
+            `;
+            return col;
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDynamicProducts);
     </script>
 
     <!-- Banner Slider -->
@@ -414,7 +486,8 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-lastest" role="tabpanel"  aria-labelledby="pills-lastest-tab" tabindex="0">
                     <div class="product">
-                        <div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-sm-2 row-cols-md-2 mt-1">
+                        <div id="latestProducts" class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-sm-2 row-cols-md-2 mt-1">
+                                <!-- Dynamic products will load here -->
                                 <div class="col">
                                     <div class="card product-card">
                                         <a href="shop-single.html">
@@ -752,7 +825,7 @@
                 </div>
                 <div class="tab-pane fade" id="pills-popularity" role="tabpanel" aria-labelledby="pills-popularity-tab" tabindex="0">
                     <div class="product">
-                        <div class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-1">
+                        <div id="featuredProducts" class="row g-4 row-cols-xl-4 row-cols-lg-3 row-cols-2 row-cols-md-2 mt-1">
                                 <div class="col">
                                     <div class="card product-card">
                                         <a href="shop-single.html">
@@ -1679,7 +1752,7 @@
                             </div>
                             <div class="blog-body pb-4">
                                  <div class="row row-cols-xl-2 row-cols-lg-2 row-cols-1 row-cols-md-1 blog-info">
-                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2023</span></div>
+                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2025</span></div>
                                       <div class="d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-person"></i><span class="ms-2">By: Devide</span></div>
                                       <div class="mt-2 d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-chat"></i><span class="ms-2">0 comments</span></div>
                                  </div>
@@ -1707,7 +1780,7 @@
                             </div>
                             <div class="blog-body pb-4">
                                  <div class="row row-cols-xl-2 row-cols-lg-2 row-cols-1 row-cols-md-1 blog-info">
-                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2023</span></div>
+                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2025</span></div>
                                       <div class="d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-person"></i><span class="ms-2">By: Devide</span></div>
                                       <div class="mt-2 d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-chat"></i><span class="ms-2">0 comments</span></div>
                                  </div>
@@ -1735,7 +1808,7 @@
                             </div>
                             <div class="blog-body pb-4">
                                  <div class="row row-cols-xl-2 row-cols-lg-2 row-cols-1 row-cols-md-1 blog-info">
-                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2023</span></div>
+                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2025</span></div>
                                       <div class="d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-person"></i><span class="ms-2">By: Devide</span></div>
                                       <div class="mt-2 d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-chat"></i><span class="ms-2">0 comments</span></div>
                                  </div>
@@ -1763,7 +1836,7 @@
                             </div>
                             <div class="blog-body pb-4">
                                  <div class="row row-cols-xl-2 row-cols-lg-2 row-cols-1 row-cols-md-1 blog-info">
-                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2023</span></div>
+                                      <div><i class="bi bi-calendar"></i><span class="ms-2">November 12, 2025</span></div>
                                       <div class="d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-person"></i><span class="ms-2">By: Devide</span></div>
                                       <div class="mt-2 d-none d-sm-none d-md-none d-lg-block"><i class="bi bi-chat"></i><span class="ms-2">0 comments</span></div>
                                  </div>

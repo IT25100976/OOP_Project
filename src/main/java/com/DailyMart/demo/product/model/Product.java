@@ -11,14 +11,17 @@ public abstract class Product {
     private double price;
     private int stock;
 
+    private String imageUrl;
+
     public Product() {}
 
-    public Product(String id, String name, String category, double price, int stock) {
+    public Product(String id, String name, String category, double price, int stock, String imageUrl) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;
         this.stock = stock;
+        this.imageUrl = imageUrl;
     }
 
     // Standard Getters and Setters
@@ -36,6 +39,9 @@ public abstract class Product {
 
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
     /**
      * Formats the product data into a CSV string for flat-file storage.

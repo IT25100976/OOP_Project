@@ -452,7 +452,7 @@
                                               </div>
                                               <div id="basicsCollapseTwo" class="accordion-collapse collapse" aria-labelledby="basicsHeadingFour" data-bs-parent="#basicsAccordion2">
                                                 <div class="px-4 py-2">
-                                                    Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
+                                                    Please send a check to Store Name, Store Street, Store Town, Store State / County, Store   Zip code.
                                                 </div>
                                               </div>
                                             </div>
@@ -620,5 +620,131 @@
     <script src="./assets/plugin/slick/slick.min.js"></script>
     <script src="./assets/js/timer.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/cart_management.js"></script>
+    
+    <script>
+        /**
+         * Session and API Header Logic
+         */
+        function getSessionId() {
+            let sessionId = localStorage.getItem('X-User-Id');
+            if (!sessionId) {
+                if (window.crypto && window.crypto.randomUUID) {
+                    sessionId = window.crypto.randomUUID();
+                } else {
+                    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                }
+                localStorage.setItem('X-User-Id', sessionId);
+            }
+            return sessionId;
+        }
+
+        const API_HEADERS = {
+            'Content-Type': 'application/json',
+            'X-User-Id': getSessionId()
+        };
+
+        const DELIVERY_FEE = 40.00;
+
+        async function updateOrderSummary() {
+            try {
+                const response = await fetch('/api/inventory/cart', { headers: API_HEADERS });
+                const cart = await response.json();
+                
+                let subtotal = 0;
+                cart.forEach(item => {
+                    subtotal += item.price * item.quantity;
+                });
+
+                const total = subtotal > 0 ? (subtotal + DELIVERY_FEE) : 0;
+                
+                document.querySelector('.p-summary-price').innerText = 'Rs ' + subtotal.toFixed(2);
+                document.querySelector('.p-summary-total-price').innerText = 'Rs ' + total.toFixed(2);
+            } catch (err) {
+                console.error('Error fetching cart:', err);
+            }
+        }
+
+        async function submitOrder(e) {
+            e.preventDefault();
+            
+            // 1. Get Cart Items First
+            let cart = [];
+            try {
+                const cartRes = await fetch('/api/inventory/cart', { headers: API_HEADERS });
+                cart = await cartRes.json();
+            } catch (err) {
+                alert("Failed to connect to cart service.");
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            const btn = document.querySelector('.checkout-btn a');
+            const originalText = btn.innerText;
+            btn.innerText = 'Processing...';
+            btn.classList.add('disabled');
+
+            // 2. Prepare Order Data
+            const firstName = document.querySelector('input[name="gs_name"]')?.value || "";
+            const lastName = document.querySelector('input[name="gs_lastname"]')?.value || "";
+            const addrInput = document.querySelector('input[placeholder="House Number and Street Name:"]');
+            
+            const orderData = {
+                customerName: (firstName + ' ' + lastName).trim(),
+                email: document.querySelector('input[name="gs_email"]')?.value || "",
+                address: addrInput?.value || "N/A",
+                totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + DELIVERY_FEE,
+                items: cart.map(item => ({
+                    productId: item.id,
+                    productName: item.name,
+                    unitPrice: item.price, // FIXED: unitPrice instead of price
+                    quantity: item.quantity
+                }))
+            };
+
+            try {
+                // 3. Post to Orders API
+                const response = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (response.ok) {
+                    const msg = await response.text();
+                    
+                    // 4. Clear Cart on Backend
+                    await fetch('/api/inventory/cart/clear', {
+                        method: 'DELETE',
+                        headers: API_HEADERS
+                    });
+
+                    alert(msg);
+                    window.location.href = 'index.html';
+                } else {
+                    const err = await response.text();
+                    alert("Order Error: " + err);
+                }
+            } catch (err) {
+                alert("Connection error. Is server running?");
+            } finally {
+                btn.innerText = originalText;
+                btn.classList.remove('disabled');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateOrderSummary();
+            const placeOrderBtn = document.querySelector('.checkout-btn a');
+            if (placeOrderBtn) {
+                placeOrderBtn.href = "javascript:void(0)";
+                placeOrderBtn.onclick = submitOrder;
+            }
+        });
+    </script>
 </body>
 </html>

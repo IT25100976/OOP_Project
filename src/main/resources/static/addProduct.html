@@ -4,64 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DailyMart - Add Product</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-card: #1e293b;
+            --accent-emerald: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .navbar-premium {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .form-card {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            margin-top: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .form-label { font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem; font-size: 0.9rem; }
+        .form-control, .form-select {
+            background: #0f172a !important;
+            border: 1px solid rgba(255,255,255,0.1) !important;
+            color: #ffffff !important;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+        }
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.4) !important;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: var(--accent-emerald) !important;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+        .btn-submit {
+            background: var(--accent-emerald);
+            border: none;
+            padding: 0.85rem;
+            border-radius: 10px;
+            font-weight: 700;
+            color: white;
+            transition: all 0.2s;
+        }
+        .btn-submit:hover { background: #059669; transform: translateY(-2px); }
+        .form-group { margin-bottom: 1.5rem; }
+        /* High Contrast Overrides */
+        h1, h2, h3, h4, h5, h6, .fw-bold { color: #ffffff !important; }
+        .text-muted { color: var(--text-muted) !important; opacity: 1 !important; }
+    </style>
 </head>
 <body>
+    <!-- Premium Admin Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-premium py-3 mb-5">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="admin.html">
+                <!-- Cleaner branding without the large white box filter issue -->
+                <i class="bi bi-shop text-success fs-3"></i>
+                <span class="fw-bold text-white tracking-tight" style="font-size: 1.2rem;">DAILYMART <span class="text-success">ADMIN</span></span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <i class="bi bi-list fs-2 text-white"></i>
+            </button>
 
-    <header>
-        <div class="logo">DailyMart Admin</div>
-        <nav>
-            <a href="index.html" style="margin-right: 1.5rem; color: #10b981;">⬅ Storefront</a>
-            <a href="admin.html">Dashboard</a>
-            <a href="addProduct.html" class="active">Add Product</a>
-            <a href="productListing.html">View Inventory</a>
-            <a href="productSearch.html">Search</a>
-        </nav>
-    </header>
-
-    <main class="animate-fade">
-        <h1 class="page-title">Add New Product</h1>
-        
-        <div class="card" style="max-width: 600px; margin: 0 auto;">
-            <form id="addProductForm" onsubmit="submitForm(event)">
-                <div class="form-group">
-                    <label for="name">Product Name</label>
-                    <input type="text" id="name" required placeholder="e.g. Organic Apples">
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="admin.html">
+                            <i class="bi bi-grid-1x2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="adminOrders.html">
+                            <i class="bi bi-truck me-2"></i>Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productListing.html">
+                            <i class="bi bi-box-seam me-2"></i>Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium active" href="addProduct.html" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);">
+                            <i class="bi bi-plus-circle-fill me-2"></i>Add Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productSearch.html">
+                            <i class="bi bi-search me-2"></i>Search
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-muted text-decoration-none d-flex align-items-center gap-1 border-bottom border-secondary" style="font-size: 0.9rem;">
+                        <i class="bi bi-shop"></i> Storefront
+                    </a>
                 </div>
-
-                <div class="form-group">
-                    <label for="price">Price ($)</label>
-                    <input type="number" step="0.01" id="price" required placeholder="e.g. 2.99">
-                </div>
-
-                <div class="form-group">
-                    <label for="stock">Initial Stock</label>
-                    <input type="number" id="stock" required placeholder="e.g. 100">
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Product Type</label>
-                    <select id="category" onchange="toggleCategoryFields()" required>
-                        <option value="" disabled selected>Select Type...</option>
-                        <option value="Fresh" data-type="Fresh">Fresh (By Weight)</option>
-                        <option value="Packaged" data-type="Packaged">Packaged (With Expiry)</option>
-                    </select>
-                </div>
-
-                <div class="form-group" id="freshField" style="display: none;">
-                    <label for="weight">Weight (kg)</label>
-                    <input type="number" step="0.01" id="weight" placeholder="e.g. 1.5">
-                </div>
-
-                <div class="form-group" id="packagedField" style="display: none;">
-                    <label for="expiry">Expiry Date</label>
-                    <input type="date" id="expiry">
-                </div>
-
-                <button type="submit" style="width: 100%;">Add Product to System</button>
-            </form>
+            </div>
         </div>
-    </main>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-xl-5">
+                <h1 class="fw-bold mb-4">Add Product</h1>
+                <div class="form-card">
+                    <form id="addProductForm" onsubmit="submitForm(event)">
+                        <div class="form-group">
+                            <label class="form-label">Product Name</label>
+                            <input type="text" id="name" class="form-control" required placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Price (Rs.)</label>
+                            <input type="number" step="0.01" id="price" class="form-control" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Product Image URL</label>
+                            <input type="url" id="imageUrl" class="form-control" placeholder="https://example.com/image.png">
+                            <small class="text-muted d-block mt-1">Paste a link to the product image.</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Initial Stock</label>
+                            <input type="number" id="stock" class="form-control" required placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select id="category" class="form-select" onchange="toggleCategoryFields()" required>
+                                <option value="" disabled selected>Select type...</option>
+                                <option value="Fresh" data-type="Fresh">Fresh (By Weight)</option>
+                                <option value="Packaged" data-type="Packaged">Packaged (Single Unit)</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="freshField" style="display: none;">
+                            <label class="form-label">Weight (kg)</label>
+                            <input type="number" step="0.01" id="weight" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="form-group" id="packagedField" style="display: none;">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="date" id="expiry" class="form-control">
+                        </div>
+                        <button type="submit" class="btn-submit w-100 mt-3">Register Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div id="notification"></div>
 
@@ -94,7 +192,8 @@
                 name: document.getElementById('name').value,
                 category: categoryValue,
                 price: parseFloat(document.getElementById('price').value),
-                stock: parseInt(document.getElementById('stock').value)
+                stock: parseInt(document.getElementById('stock').value),
+                imageUrl: document.getElementById('imageUrl').value.trim()
             };
 
             if (type === 'Fresh') {
@@ -133,5 +232,6 @@
             setTimeout(() => { notif.className = ''; }, 3000);
         }
     </script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

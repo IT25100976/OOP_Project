@@ -766,9 +766,25 @@
     <script src="./assets/plugin/slick/slick.min.js"></script>
     <script src="./assets/js/timer.js"></script>
     <script src="./assets/js/main.js"></script>
+    <!-- Cart Notification Toast -->
+    <div id="cartToast" style="display: none; position: fixed; bottom: 20px; right: 20px; background: #4CAF50; color: white; padding: 1rem; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000; animation: slideIn 0.3s ease-out;">
+        <div class="d-flex align-items-center gap-3">
+            <span id="toastMessage">Item added to cart!</span>
+            <a href="cart.html" class="btn btn-sm btn-light fw-bold" style="color: #4CAF50; text-decoration: none;">View Cart</a>
+            <button type="button" class="btn-close btn-close-white" onclick="document.getElementById('cartToast').style.display='none'" style="filter: invert(1); background: none; border: none; font-size: 1.2rem; color: white;">&times;</button>
+        </div>
+    </div>
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+
     <script>
         /**
-         * Session and API Header Logic (Inlined)
+         * Session and API Header Logic
          */
         function getSessionId() {
             let sessionId = localStorage.getItem('X-User-Id');
@@ -788,35 +804,68 @@
             'X-User-Id': getSessionId()
         };
 
-        /**
-         * Global Search Function (also present on index.html for consistency)
-         */
-        function storefrontSearch(btn) {
-            const input = btn.parentElement.querySelector('input');
-            const keyword = input.value.trim();
-            if (keyword) {
-                window.location.href = 'shop.html?search=' + encodeURIComponent(keyword);
+        function showToast(message, isWishlist = false) {
+            const toast = document.getElementById('cartToast');
+            const msgEl = document.getElementById('toastMessage');
+            msgEl.innerText = message;
+            
+            const actionBtn = toast.querySelector('a');
+            if (isWishlist) {
+                actionBtn.innerText = 'View Wishlist';
+                actionBtn.href = 'wishlist.html';
+            } else {
+                actionBtn.innerText = 'View Cart';
+                actionBtn.href = 'cart.html';
+            }
+
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 5000);
+        }
+
+        async function addToWishlist(id, name, price, imageUrl) {
+            const item = { 
+                id: id, 
+                name: name, 
+                price: price, 
+                quantity: 1, 
+                imageUrl: imageUrl || './assets/images/product/Apple-first.png' 
+            };
+            try {
+                const res = await fetch('/api/inventory/wishlist/add', {
+                    method: 'POST',
+                    headers: API_HEADERS,
+                    body: JSON.stringify(item)
+                });
+                if (res.ok) {
+                    showToast(name + ' added to wishlist!', true);
+                }
+            } catch (err) {
+                console.error('Wishlist error:', err);
             }
         }
 
-        function addToWishlist(id, name, price) {
-            const item = { id: id, name: name, price: price, quantity: 1, imageUrl: './assets/images/product/Apple-first.png' };
-            fetch('/api/inventory/wishlist/add', {
-                method: 'POST',
-                headers: API_HEADERS,
-                body: JSON.stringify(item)
-            }).then(() => alert(name + ' added to wishlist!'))
-              .catch(err => console.error(err));
-        }
-
-        function addToCart(id, name, price) {
-            const item = { id: id, name: name, price: price, quantity: 1, imageUrl: './assets/images/product/Apple-first.png' };
-            fetch('/api/inventory/cart/add', {
-                method: 'POST',
-                headers: API_HEADERS,
-                body: JSON.stringify(item)
-            }).then(() => alert(name + ' added to cart!'))
-              .catch(err => console.error(err));
+        async function addToCart(id, name, price, imageUrl) {
+            const item = { 
+                id: id, 
+                name: name, 
+                price: price, 
+                quantity: 1, 
+                imageUrl: imageUrl || './assets/images/product/Apple-first.png' 
+            };
+            try {
+                const res = await fetch('/api/inventory/cart/add', {
+                    method: 'POST',
+                    headers: API_HEADERS,
+                    body: JSON.stringify(item)
+                });
+                if (res.ok) {
+                    showToast(name + ' added to cart!');
+                }
+            } catch (err) {
+                console.error('Cart error:', err);
+            }
         }
 
         /**
@@ -838,25 +887,38 @@
                     container.innerHTML = products.map(p => {
                         // Safely escape parameters for inline handlers
                         const safeName = p.name.replace(/'/g, "\\'");
+                        const img = (p.imageUrl && p.imageUrl.trim()) ? p.imageUrl : './assets/images/product/Apple-first.png';
                         return `
                         <div class="col">
-                            <div class="card product-card">
+                            <div class="card product-card h-100 shadow-sm border-0">
                                 <div class="card-body pt-3 pb-0 text-center position-relative">
+                                    <a href="shop-single.html">
+                                        <img src="${img}" class="img-fluid rounded mb-3" style="height: 160px; width: 100%; object-fit: cover;" alt="${p.name}">
+                                    </a>
                                     <div class="icons position-absolute top-0 end-0 mt-2 me-2">
-                                        <a href="javascript:void(0)" onclick="addToWishlist('${p.id}', '${safeName}', ${p.price})" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i class="bi bi-heart"></i></a>
+                                        <a href="javascript:void(0)" onclick="addToWishlist('${p.id}', '${safeName}', ${p.price}, '${img}')" title="Wishlist" class="text-muted"><i class="bi bi-heart"></i></a>
                                     </div>
-                                    <div class="badge ${p.id.startsWith('F') ? 'bg-success' : 'bg-primary'} mb-2 text-white px-2 py-1">${p.category}</div>
-                                    <br>
-                                    <h5 class="card-title text-dark d-inline-block mt-2">${p.name}</h5>
+                                    <div class="badge ${p.id.startsWith('F') ? 'bg-success' : 'bg-primary'} mb-2 text-white px-2 py-1" style="font-size: 0.7rem;">${p.category}</div>
+                                    <h5 class="card-title text-dark my-1" style="font-size: 1rem;">${p.name}</h5>
                                 </div>
                                 <div class="product-price px-3 pb-2 text-center">
-                                    <div class="d-block mt-2">
-                                        <span class="sell-price fs-5 fw-bold">Rs ${p.price.toFixed(2)}</span>
+                                    <div class="d-block mt-1">
+                                        <span class="sell-price fs-5 fw-bold text-success">Rs ${p.price.toFixed(2)}</span>
                                     </div>
-                                    <div class="text-muted small mt-1">Stock: ${p.stock}</div>
+                                    <div class="mt-2">
+                                        ${p.stock <= 0 ? 
+                                            '<span class="badge bg-danger">Out of Stock</span>' : 
+                                            (p.stock < 10 ? `<span class="badge bg-warning text-dark">Only ${p.stock} left</span>` : `<span class="badge" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">Stock: ${p.stock}</span>`)
+                                        }
+                                    </div>
                                 </div>
                                 <div class="product-footer pb-3 pt-2">
-                                    <button class="btn btn-outline-primary w-100 rounded btn-cart" style="max-width: 90%; margin: 0 auto; display: block;" onclick="addToCart('${p.id}', '${safeName}', ${p.price})">Add to Cart</button>
+                                    <button class="btn btn-primary w-100 rounded-pill btn-cart shadow-sm" 
+                                            style="max-width: 90%; margin: 0 auto; display: block; font-weight: 600;" 
+                                            ${p.stock <= 0 ? 'disabled' : ''}
+                                            onclick="addToCart('${p.id}', '${safeName}', ${p.price}, '${img}')">
+                                        ${p.stock > 0 ? 'Add to Cart' : 'Sold Out'}
+                                    </button>
                                 </div>
                             </div>
                         </div>

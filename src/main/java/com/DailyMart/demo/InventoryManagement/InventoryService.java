@@ -333,4 +333,20 @@ public class InventoryService {
             System.out.println("[InventoryService] Item not found in wishlist: " + productId);
         }
     }
+
+    /**
+     * Clears the entire cart for a specific session.
+     * Often called after a successful checkout.
+     */
+    public void clearCart(String sessionId) {
+        List<String> allLines = getAllLines(CART_FILE);
+
+        // Keep every line EXCEPT those matching this sessionId
+        List<String> updatedLines = allLines.stream()
+                .filter(line -> !line.split("\\|", 2)[0].equals(sessionId))
+                .collect(Collectors.toList());
+
+        saveAllItems(CART_FILE, updatedLines);
+        System.out.println("[InventoryService] Cart cleared for session: " + sessionId);
+    }
 }

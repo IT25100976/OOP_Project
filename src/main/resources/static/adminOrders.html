@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management | DailyMart Admin</title>
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-card: #1e293b;
+            --accent-emerald: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .navbar-premium {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .order-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.2s;
+        }
+        .order-card:hover { transform: translateY(-3px); border-color: var(--accent-emerald); }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .order-id { font-weight: 700; color: var(--accent-emerald); font-family: monospace; font-size: 1.1rem; }
+        .order-date { color: var(--text-muted); font-size: 0.85rem; }
+        .item-list { list-style: none; padding: 0; }
+        .item-list li {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            padding: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dotted rgba(255, 255, 255, 0.05);
+        }
+        .status-select {
+            background: #0f172a;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+        }
+        .status-select:focus { border-color: var(--accent-emerald); }
+        .customer-info { margin-bottom: 1.25rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 0.75rem; }
+        .customer-info strong { color: var(--text-muted); font-weight: 500; font-size: 1rem; text-transform: uppercase; display: block; margin-bottom: 0.25rem; }
+        /* High Contrast Overrides */
+        h1, h2, h3, h4, h5, h6, .fw-bold { color: #ffffff !important; }
+        .text-muted { color: var(--text-muted) !important; opacity: 1 !important; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top navbar-premium py-3 mb-5">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="admin.html">
+                <i class="bi bi-shop text-success fs-3"></i>
+                <span class="fw-bold text-white tracking-tight" style="font-size: 1.2rem;">DAILYMART <span class="text-success">ADMIN</span></span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <i class="bi bi-list fs-2 text-white"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="admin.html">
+                            <i class="bi bi-grid-1x2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium active" href="adminOrders.html" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);">
+                            <i class="bi bi-truck-fill me-2"></i>Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productListing.html">
+                            <i class="bi bi-box-seam me-2"></i>Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="addProduct.html">
+                            <i class="bi bi-plus-circle me-2"></i>Add Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productSearch.html">
+                            <i class="bi bi-search me-2"></i>Search
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-muted text-decoration-none d-flex align-items-center gap-1 border-bottom border-secondary" style="font-size: 0.9rem;">
+                        <i class="bi bi-shop"></i> Storefront
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container pb-5">
+        <div class="mb-5">
+            <h2 class="fw-bold mb-2">Manage Orders</h2>
+            <p class="text-muted">Process and track customer purchases efficiently.</p>
+        </div>
+
+        <div id="ordersContainer">
+            <div class="text-center py-5">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Fetching live orders...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchOrders() {
+            try {
+                const response = await fetch('/api/orders');
+                const orders = await response.json();
+                renderOrders(orders);
+            } catch (err) {
+                document.getElementById('ordersContainer').innerHTML = '<p class="error">Failed to load orders.</p>';
+            }
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('ordersContainer');
+            if (orders.length === 0) {
+                container.innerHTML = '<p>No orders found.</p>';
+                return;
+            }
+
+            container.innerHTML = orders.reverse().map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <span class="order-id">${order.orderId}</span>
+                            <div class="order-date">${order.date}</div>
+                        </div>
+                        <select class="status-select" onchange="updateStatus('${order.orderId}', this.value)">
+                            <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                            <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="customer-info">
+                        <strong>Customer:</strong> ${order.customerName} (${order.email})<br>
+                        <strong>Address:</strong> ${order.address}
+                    </div>
+                    <ul class="item-list">
+                        ${order.items.map(item => `
+                            <li>
+                                <span>${item.productName} (x${item.quantity})</span>
+                                <span>Rs ${(item.unitPrice * item.quantity).toFixed(2)}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    <div style="text-align: right; margin-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 1rem;">
+                        <strong>Total: Rs ${order.totalAmount.toFixed(2)}</strong>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function updateStatus(id, newStatus) {
+            try {
+                const res = await fetch(`/api/orders/${id}/status?status=${newStatus}`, { method: 'PUT' });
+                if (res.ok) {
+                    alert("Status updated successfully!");
+                }
+            } catch (err) {
+                alert("Error updating status");
+            }
+        }
+
+        fetchOrders();
+    </script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

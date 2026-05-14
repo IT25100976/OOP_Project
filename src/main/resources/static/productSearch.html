@@ -4,34 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DailyMart - Search</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --bg-card: #1e293b;
+            --accent-emerald: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .navbar-premium {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .search-container {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .search-input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 0.75rem 1rem;
+            flex: 1;
+            outline: none;
+        }
+        .btn-search {
+            background: var(--accent-emerald);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+        }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+        .inventory-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 1.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .badge-custom { 
+            position: absolute; top: 1.25rem; right: 1.25rem; 
+            padding: 0.4rem 0.8rem; border-radius: 2rem; 
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase; 
+        }
+        .badge-custom.fresh { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .badge-custom.packaged { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; color: white; }
+        .product-meta { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.25rem; }
+        .search-input::placeholder { color: rgba(255, 255, 255, 0.4) !important; }
+        /* High Contrast Overrides */
+        h1, h2, h3, h4, h5, h6, .fw-bold { color: #ffffff !important; }
+        .text-muted { color: var(--text-muted) !important; opacity: 1 !important; }
+    </style>
 </head>
 <body>
+    <!-- Premium Admin Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-premium py-3 mb-5">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="admin.html">
+                <i class="bi bi-shop text-success fs-3"></i>
+                <span class="fw-bold text-white tracking-tight" style="font-size: 1.2rem;">DAILYMART <span class="text-success">ADMIN</span></span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <i class="bi bi-list fs-2 text-white"></i>
+            </button>
 
-    <header>
-        <div class="logo">DailyMart Admin</div>
-        <nav>
-            <a href="index.html" style="margin-right: 1.5rem; color: #10b981;">⬅ Storefront</a>
-            <a href="admin.html">Dashboard</a>
-            <a href="addProduct.html">Add Product</a>
-            <a href="productListing.html">View Inventory</a>
-            <a href="productSearch.html" class="active">Search</a>
-        </nav>
-    </header>
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="admin.html">
+                            <i class="bi bi-grid-1x2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="adminOrders.html">
+                            <i class="bi bi-truck me-2"></i>Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productListing.html">
+                            <i class="bi bi-box-seam me-2"></i>Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="addProduct.html">
+                            <i class="bi bi-plus-circle me-2"></i>Add Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium active" href="productSearch.html" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);">
+                            <i class="bi bi-search-heart-fill me-2"></i>Search
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-muted text-decoration-none d-flex align-items-center gap-1 border-bottom border-secondary" style="font-size: 0.9rem;">
+                        <i class="bi bi-shop"></i> Storefront
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <main class="animate-fade">
-        <h1 class="page-title">Search Products</h1>
-        
-        <div class="card" style="display:flex; gap: 1rem; margin-bottom: 2rem;">
-            <input type="text" id="searchInput" placeholder="Enter product name or category (e.g. Fresh, Apple)..." style="flex: 1;" onkeypress="if(event.key === 'Enter') handleSearch()">
-            <button onclick="handleSearch()">Search</button>
+    <div class="container pb-5">
+        <div class="mb-5 text-center">
+            <h2 class="fw-bold mb-2">Inventory Search</h2>
+            <p class="text-muted">Find products by name, category, or reference ID instantly.</p>
         </div>
 
-        <div class="product-grid" id="searchResults">
-            <!-- Results rendered here -->
-            <p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">Enter a keyword above to search</p>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search product name, Fresh, Packaged..." onkeypress="if(event.key === 'Enter') handleSearch()">
+                    <button class="btn-search" onclick="handleSearch()">
+                        <i class="bi bi-search me-2"></i>Search
+                    </button>
+                </div>
+            </div>
         </div>
-    </main>
+
+        <div id="searchResults" class="product-grid">
+            <p class="text-center py-5 w-100 text-muted">Enter a keyword above to start searching.</p>
+        </div>
+    </div>
 
     <div id="notification"></div>
 
@@ -48,15 +165,28 @@
                 const products = await res.json();
                 
                 if (products.length === 0) {
-                    container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No products matched your search.</p>';
+                    container.innerHTML = '<p class="text-center py-5 w-100 text-muted">No products found matching your criteria.</p>';
                 } else {
                     container.innerHTML = products.map(p => `
-                        <div class="product-item">
-                            <div class="badge ${p.category === 'Fresh' ? 'fresh' : ''}">${p.category}</div>
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="inventory-card">
+                            <div class="badge-custom ${p.category === 'Fresh' ? 'fresh' : (p.category === 'Packaged' ? 'packaged' : '')}">${p.category}</div>
                             <h3 class="product-title">${p.name}</h3>
-                            <p class="product-meta">Ref: ${p.id}</p>
-                            <p><strong>Price:</strong> Rs ${p.price.toFixed(2)}</p>
-                            <p><strong>Stock:</strong> ${p.stock} units</p>
+                            <p class="product-meta">Ref ID: ${p.id}</p>
+                            
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Price:</span>
+                                <span class="fw-bold text-success">Rs. ${p.price.toFixed(2)}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span class="text-muted">Stock:</span>
+                                <span class="fw-bold">${p.stock} units</span>
+                            </div>
+
+                            <p class="small text-muted mb-0">
+                                <i class="bi ${p.category === 'Fresh' ? 'bi-moisture' : 'bi-calendar-event'} me-1"></i>
+                                ${p.category === 'Fresh' ? 'Weight: '+p.weight+'kg' : 'Expiry: '+p.expiryDate}
+                            </p>
                         </div>
                     `).join('');
                 }
@@ -65,5 +195,6 @@
             }
         }
     </script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

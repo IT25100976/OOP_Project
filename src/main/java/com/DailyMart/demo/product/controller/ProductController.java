@@ -86,6 +86,7 @@ public class ProductController {
     public static class UpdateRequest {
         public double price;
         public int stock;
+        public String imageUrl;
     }
 
     /**
@@ -97,8 +98,11 @@ public class ProductController {
         if (p != null) {
             p.setPrice(request.price);
             p.setStock(request.stock);
+            if (request.imageUrl != null) {
+                p.setImageUrl(request.imageUrl.trim());
+            }
             productRepository.updateProduct(p);
-            return ResponseEntity.ok("Product price and stock updated successfully!");
+            return ResponseEntity.ok("Product updated successfully!");
         }
         return ResponseEntity.status(404).body("Product not found");
     }

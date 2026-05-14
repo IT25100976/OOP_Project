@@ -1,38 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DailyMart - Inventory Listing</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <style>
-        .edit-fields { display: none; margin-top: 1rem; }
-        .edit-fields input { padding: 0.5rem; margin-bottom: 0.5rem; }
+        :root {
+            --bg-deep: #0f172a;
+            --bg-card: #1e293b;
+            --accent-emerald: #10b981;
+            --text-main: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .navbar-premium {
+            background: rgba(15, 23, 42, 0.8) !important;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .inventory-card {
+            background: var(--bg-card);
+            padding: 1.75rem;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.2s;
+            position: relative;
+        }
+        .inventory-card:hover { transform: translateY(-3px); border-color: var(--accent-emerald); }
+        .badge-custom { 
+            position: absolute; top: 1.5rem; right: 1.5rem; 
+            padding: 0.35rem 0.75rem; border-radius: 8px; 
+            font-size: 0.7rem; font-weight: 700;
+        }
+        .badge-custom.fresh { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .badge-custom.packaged { background: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+        .product-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .ref-id { color: #64748b; font-size: 0.85rem; margin-bottom: 1.25rem; }
+        .info-row { display: flex; gap: 8px; margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .info-label { font-weight: 700; color: white; }
+        .btn-action { border-radius: 8px; padding: 0.6rem 1.2rem; font-weight: 600; border: none; min-width: 90px; }
+        .btn-edit { background: var(--accent-emerald); color: white; }
+        .btn-delete { background: #ef4444; color: white; }
+        .btn-custom-success {
+            background: var(--accent-emerald);
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-custom-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            color: white !important;
+        }
+        .edit-fields { display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); }
+        .edit-fields input { 
+            width: 100%; padding: 0.6rem 1rem; margin-bottom: 0.75rem; 
+            background: #0f172a; border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 8px; color: white;
+        }
+        .btn-update { background: var(--accent-emerald); color: white; border: none; padding: 0.75rem; border-radius: 8px; font-weight: 700; width: 100%; }
+        ::placeholder { color: rgba(255, 255, 255, 0.4) !important; }
+        /* High Contrast Overrides */
+        h1, h2, h3, h4, h5, h6, .fw-bold { color: #ffffff !important; }
+        .text-muted { color: var(--text-muted) !important; opacity: 1 !important; }
     </style>
 </head>
 <body>
+    <!-- Premium Admin Navigation Bar -->
+    <nav class="navbar navbar-expand-lg sticky-top navbar-premium py-3 mb-5">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="admin.html">
+                <i class="bi bi-shop text-success fs-3"></i>
+                <span class="fw-bold text-white tracking-tight" style="font-size: 1.2rem;">DAILYMART <span class="text-success">ADMIN</span></span>
+            </a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+                <i class="bi bi-list fs-2 text-white"></i>
+            </button>
 
-    <header>
-        <div class="logo">DailyMart Admin</div>
-        <nav>
-            <a href="index.html" style="margin-right: 1.5rem; color: #10b981;">⬅ Storefront</a>
-            <a href="admin.html">Dashboard</a>
-            <a href="addProduct.html">Add Product</a>
-            <a href="productListing.html" class="active">View Inventory</a>
-            <a href="productSearch.html">Search</a>
-        </nav>
-    </header>
+            <div class="collapse navbar-collapse" id="adminNav">
+                <ul class="navbar-nav mx-auto gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="admin.html">
+                            <i class="bi bi-grid-1x2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="adminOrders.html">
+                            <i class="bi bi-truck me-2"></i>Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium active" href="productListing.html" style="background: rgba(16, 185, 129, 0.1); color: var(--accent-emerald);">
+                            <i class="bi bi-box-seam-fill me-2"></i>Inventory
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="addProduct.html">
+                            <i class="bi bi-plus-circle me-2"></i>Add Product
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3 py-2 rounded-pill fw-medium text-muted" href="productSearch.html">
+                            <i class="bi bi-search me-2"></i>Search
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-muted text-decoration-none d-flex align-items-center gap-1 border-bottom border-secondary" style="font-size: 0.9rem;">
+                        <i class="bi bi-shop"></i> Storefront
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-    <main class="animate-fade">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h1 class="page-title" style="margin-bottom:0;">Live Inventory</h1>
-            <button onclick="fetchProducts()">Refresh Data</button>
+    <div class="container pb-5">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-1">Catalog Management</h2>
+                <p class="text-muted mb-0">Monitor and update your store's inventory in real-time.</p>
+            </div>
+            <a href="addProduct.html" class="btn btn-custom btn-custom-success">
+                <i class="bi bi-plus-lg me-2"></i>New Product
+            </a>
         </div>
-        
-        <div class="product-grid" id="productContainer" style="margin-top: 2rem;">
-            <!-- Rendered by JS -->
+
+        <div id="productList" class="row g-4">
+            <div class="text-center py-5 w-100">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Scanning inventory...</p>
+            </div>
         </div>
-    </main>
+    </div>
 
     <div id="notification"></div>
 
@@ -40,42 +158,62 @@
         document.addEventListener("DOMContentLoaded", fetchProducts);
 
         async function fetchProducts() {
-            const container = document.getElementById('productContainer');
-            container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Loading...</p>';
-            
+            const container = document.getElementById('productList');
+            container.innerHTML = '<div class="text-center py-5 w-100"><div class="spinner-border text-success" role="status"></div><p class="mt-3 text-muted">Scanning inventory...</p></div>';
+
             try {
                 const res = await fetch('/api/products');
                 const products = await res.json();
-                
-                if (products.length === 0) {
-                    container.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No products found in the database.</p>';
-                } else {
-                    container.innerHTML = products.map(p => `
-                        <div class="product-item" id="item-${p.id}">
-                            <div class="badge ${p.category === 'Fresh' ? 'fresh' : (p.category === 'Packaged' ? 'packaged' : '')}">${p.category}</div>
-                            <h3 class="product-title">${p.name}</h3>
-                            <p class="product-meta">Ref: ${p.id}</p>
-                            <p><strong>Price:</strong> $<span id="price-lbl-${p.id}">${p.price.toFixed(2)}</span></p>
-                            <p><strong>Stock:</strong> <span id="stock-lbl-${p.id}">${p.stock}</span> units</p>
-                            <p style="color:var(--text-secondary); font-size:0.85rem; margin-top:0.5rem;">
-                                ${p.category === 'Fresh' ? 'Weight: '+p.weight+'kg' : 'Expiry: '+p.expiryDate}
-                            </p>
-                            
-                            <div class="product-actions" style="margin-top: 1rem;">
-                                <button onclick="toggleEdit('${p.id}')">Edit</button>
-                                <button class="danger" onclick="deleteProduct('${p.id}')">Delete</button>
-                            </div>
 
-                            <div class="edit-fields" id="edit-${p.id}">
-                                <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}" placeholder="New Price">
-                                <input type="number" id="edit-stock-${p.id}" value="${p.stock}" placeholder="New Stock">
-                                <button onclick="saveEdit('${p.id}')" style="width:100%; padding: 0.5rem;">Save Changes</button>
+                if (products.length === 0) {
+                    container.innerHTML = '<p class="text-center py-5 w-100">No products found in the database.</p>';
+                } else {
+                    container.innerHTML = products.map(p => {
+                        const img = (p.imageUrl && p.imageUrl.trim()) ? p.imageUrl : './assets/images/product/Apple-first.png';
+                        return `
+                        <div class="col-sm-6 col-lg-4 col-xl-3">
+                            <div class="inventory-card h-100" id="item-${p.id}">
+                                <div class="badge-custom ${p.category === 'Fresh' ? 'fresh' : (p.category === 'Packaged' ? 'packaged' : '')}">${p.category}</div>
+                                
+                                <div class="text-center mb-3">
+                                    <img src="${img}" class="rounded shadow-sm" style="height: 120px; width: 100%; object-fit: cover;" alt="${p.name}">
+                                </div>
+                                
+                                <h3 class="product-title">${p.name}</h3>
+                                <div class="ref-id">Ref: ${p.id}</div>
+                                
+                                <div class="info-row">
+                                    <span class="info-label">Price:</span>
+                                    <span>Rs ${p.price.toFixed(2)}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">Stock:</span>
+                                    <span id="stock-lbl-${p.id}">${p.stock} units</span>
+                                </div>
+                                <div class="info-row small text-muted mb-4">
+                                    <span>${p.category === 'Fresh' ? 'Weight: '+p.weight+'kg' : 'Expiry: '+p.expiryDate}</span>
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <button class="btn-action btn-edit" onclick="toggleEdit('${p.id}')">Edit</button>
+                                    <button class="btn-action btn-delete" onclick="deleteProduct('${p.id}')">Delete</button>
+                                </div>
+
+                                <div class="edit-fields" id="edit-${p.id}">
+                                    <label class="small text-muted mb-1">New Price</label>
+                                    <input type="number" step="0.01" id="edit-price-${p.id}" value="${p.price}">
+                                    <label class="small text-muted mb-1">New Stock</label>
+                                    <input type="number" id="edit-stock-${p.id}" value="${p.stock}">
+                                    <label class="small text-muted mb-1">New Image URL</label>
+                                    <input type="text" id="edit-image-${p.id}" value="${p.imageUrl || ''}" placeholder="Image Link">
+                                    <button class="btn-update" onclick="saveEdit('${p.id}')">Update Product</button>
+                                </div>
                             </div>
                         </div>
-                    `).join('');
+                    `}).join('');
                 }
-            } catch(e) {
-                container.innerHTML = '<p style="text-align:center; color: var(--danger); grid-column: 1/-1;">Error connecting to backend API.</p>';
+            } catch (e) {
+                container.innerHTML = '<p class="text-center py-5 w-100 text-danger">Error connecting to backend API.</p>';
             }
         }
 
@@ -87,39 +225,42 @@
         async function saveEdit(id) {
             const newPrice = document.getElementById(`edit-price-${id}`).value;
             const newStock = document.getElementById(`edit-stock-${id}`).value;
+            const newImage = document.getElementById(`edit-image-${id}`).value;
 
             try {
                 const res = await fetch(`/api/products/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ price: parseFloat(newPrice), stock: parseInt(newStock) })
+                    body: JSON.stringify({ 
+                        price: parseFloat(newPrice), 
+                        stock: parseInt(newStock),
+                        imageUrl: newImage
+                    })
                 });
 
                 if (res.ok) {
-                    showNotification('Updated successfully!');
-                    document.getElementById(`price-lbl-${id}`).innerText = parseFloat(newPrice).toFixed(2);
-                    document.getElementById(`stock-lbl-${id}`).innerText = newStock;
-                    toggleEdit(id);
+                    showNotification('Updated successfully! Reloading...');
+                    setTimeout(() => location.reload(), 1500); // Reload to reflect all changes easily
                 } else {
                     showNotification('Update failed.', true);
                 }
-            } catch(e) {
+            } catch (e) {
                 showNotification('Network error.', true);
             }
         }
 
         async function deleteProduct(id) {
-            if(!confirm('Are you sure you want to delete this product?')) return;
-            
+            if (!confirm('Are you sure you want to delete this product?')) return;
+
             try {
                 const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
-                if(res.ok) {
+                if (res.ok) {
                     showNotification('Product deleted');
                     document.getElementById(`item-${id}`).remove();
                 } else {
                     showNotification('Delete failed.', true);
                 }
-            } catch(e) {
+            } catch (e) {
                 showNotification('Network error.', true);
             }
         }
@@ -131,5 +272,7 @@
             setTimeout(() => { notif.className = ''; }, 3000);
         }
     </script>
+    <script src="./assets/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

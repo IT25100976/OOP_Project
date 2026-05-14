@@ -9,8 +9,8 @@ public class FreshProduct extends Product {
 
     public FreshProduct() {}
 
-    public FreshProduct(String id, String name, String category, double price, int stock, double weight) {
-        super(id, name, category, price, stock);
+    public FreshProduct(String id, String name, String category, double price, int stock, String imageUrl, double weight) {
+        super(id, name, category, price, stock, imageUrl);
         this.weight = weight;
     }
 
@@ -19,11 +19,14 @@ public class FreshProduct extends Product {
 
     /**
      * Compiles product data into a format saved in products.txt:
-     * ID,Name,Price,Stock,Category,Weight
+     * ID,Name,Price,Stock,Category,ImageUrl,Weight
      */
     @Override
     public String toFileString() {
-        return String.format("%s,%s,%s,%s,%s,%s", getId(), getName(), getPrice(), getStock(), getCategory(), getWeight());
+        return String.format("%s,%s,%s,%s,%s,%s,%s", 
+                getId(), getName(), getPrice(), getStock(), getCategory(), 
+                (getImageUrl() == null || getImageUrl().isEmpty() ? " " : getImageUrl()), 
+                getWeight());
     }
 
     @Override
