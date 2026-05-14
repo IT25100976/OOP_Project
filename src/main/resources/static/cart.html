@@ -240,9 +240,10 @@
                             <div class="p-5">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h1 class="fw-bold mb-0 text-black text-uppercase">My Cart</h1>
-                                    <h5 class="mb-0  fw-bold border py-2 px-4 text-muted">2 Items</h5>
+                                    <h5 class="mb-0  fw-bold border py-2 px-4 text-muted" id="itemCount">0 Items</h5>
                                 </div>
                                 <hr class="my-4">
+                                <!-- Backend Connection: The tbody below is populated by cart-api.js fetching from /api/inventory/cart -->
                                 <div class="table-responsive cart-container">
                                     <table class="table">
                                       <thead>
@@ -254,28 +255,8 @@
                                           <th scope="col">Total</th>
                                         </tr>
                                       </thead>
-                                      <tbody>
-                                        <tr>
-                                          <th scope="row" class="align-middle" width="20%">
-                                           <a href="#" class="text-muted me-3 remove-item" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                            </a>
-                                            <a href="#">
-                                                <img src="./assets/images/product/Apple-first.png" class="img-fluid rounded-3" width="100" alt="Apple-first">
-                                            </a>
-                                          </th>
-                                          <td class="align-middle" width="30%">
-                                            <a href="#" class="text-black">Apple</a></td>
-                                          <td class="align-middle" width="15%">Rs 10.00</td>
-                                          <td class="align-middle" width="20%">
-                                            <div class="qty-container">
-                                                <button class="qty-btn-minus count-decreament" type="button"><i class="bi bi-dash"></i></button>
-                                                <input type="number" name="qty" value="1" class="input-qty input-cornered"/>
-                                                <button class="qty-btn-plus count-increament" type="button"><i class="bi bi-plus"></i></button>
-                                            </div>
-                                          </td>
-                                          <td class="align-middle" width="15%">Rs 20.00</td>
-                                        </tr>
+                                      <tbody id="cartContainer">
+                                        <!-- Items will be injected here via JavaScript -->
                                       </tbody>
                                     </table>
                                   </div>
@@ -286,19 +267,19 @@
                                         <table class="table">
                                             <tr>
                                                 <td>Subtotal</td>
-                                                <td class="text-right">Rs 100</td>
+                                                <td class="text-right" id="cartSubtotal">Rs 0</td>
                                             </tr>
                                             <tr>
                                                 <td>Discount</td>
-                                                <td class="text-right">Rs 10</td>
+                                                <td class="text-right" id="cartDiscount">Rs 0</td>
                                             </tr>
                                             <tr>
                                                 <td>Shipping Fee</td>
-                                                <td class="text-right">Rs 10</td>
+                                                <td class="text-right" id="cartShipping">Rs 0</td>
                                             </tr>
                                             <tr>
                                                 <td class="fw-bold">Total</td>
-                                                <td class="text-right fw-bold">Rs 110</td>
+                                                <td class="text-right fw-bold" id="cartTotal">Rs 0</td>
                                             </tr>
                                          </table>
                                       </div>
@@ -414,5 +395,122 @@
     <script src="./assets/plugin/slick/slick.min.js"></script>
     <script src="./assets/js/timer.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script>
+        /**
+         * Session and API Header Logic (Inlined)
+         */
+        function getSessionId() {
+            let sessionId = localStorage.getItem('X-User-Id');
+            if (!sessionId) {
+                if (window.crypto && window.crypto.randomUUID) {
+                    sessionId = window.crypto.randomUUID();
+                } else {
+                    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                }
+                localStorage.setItem('X-User-Id', sessionId);
+            }
+            return sessionId;
+        }
+
+        const API_HEADERS = {
+            'Content-Type': 'application/json',
+            'X-User-Id': getSessionId()
+        };
+
+        /**
+         * Cart API Logic (Inlined)
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCart();
+        });
+
+        function loadCart() {
+            fetch('/api/inventory/cart', { headers: API_HEADERS })
+                .then(response => response.json())
+                .then(data => {
+                    renderCart(data);
+                })
+                .catch(err => console.error('Error loading cart:', err));
+        }
+
+        function renderCart(items) {
+            const container = document.getElementById('cartContainer');
+            const itemCount = document.getElementById('itemCount');
+            const subtotalEl = document.getElementById('cartSubtotal');
+            const totalEl = document.getElementById('cartTotal');
+            const discountEl = document.getElementById('cartDiscount');
+            const shippingEl = document.getElementById('cartShipping');
+
+            if (!container) return;
+
+            itemCount.innerText = `${items.length} Items`;
+            container.innerHTML = '';
+
+            const DISCOUNT = 10.00;
+            const SHIPPING = 10.00;
+            let subtotal = 0;
+
+            if (items.length === 0) {
+                container.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-5"><i class="bi bi-cart-x fs-1 d-block mb-2"></i>Your cart is empty. Visit the <a href="shop.html">shop</a> to add items!</td></tr>`;
+                subtotalEl.innerText = 'Rs 0';
+                discountEl.innerText = `Rs ${DISCOUNT}`;
+                shippingEl.innerText = `Rs ${SHIPPING}`;
+                totalEl.innerText = 'Rs 0';
+                return;
+            }
+
+            items.forEach(item => {
+                const itemTotal = (item.price * item.quantity).toFixed(2);
+                subtotal += item.price * item.quantity;
+
+                const rowHtml = `
+                <tr>
+                    <th scope="row" class="align-middle" width="20%">
+                        <button onclick="removeFromCart('${item.id}')" class="btn btn-link text-muted me-3 p-0" title="Remove item"><i class="bi bi-trash"></i></button>
+                        <img src="${item.imageUrl}" class="img-fluid rounded-3" width="80" alt="${item.name}">
+                    </th>
+                    <td class="align-middle" width="30%"><span class="text-black fw-semibold">${item.name}</span></td>
+                    <td class="align-middle" width="15%">Rs ${item.price}</td>
+                    <td class="align-middle" width="20%">
+                        <div class="qty-container">
+                            <button class="qty-btn-minus count-decreament" onclick="updateQuantity('${item.id}', ${item.quantity - 1})" type="button"><i class="bi bi-dash"></i></button>
+                            <input type="number" name="qty" value="${item.quantity}" min="1" onchange="updateQuantity('${item.id}', parseInt(this.value))" class="input-qty input-cornered"/>
+                            <button class="qty-btn-plus count-increament" onclick="updateQuantity('${item.id}', ${item.quantity + 1})" type="button"><i class="bi bi-plus"></i></button>
+                        </div>
+                    </td>
+                    <td class="align-middle fw-semibold" width="15%">Rs ${itemTotal}</td>
+                </tr>`;
+                container.insertAdjacentHTML('beforeend', rowHtml);
+            });
+
+            const grandTotal = (subtotal - DISCOUNT + SHIPPING).toFixed(2);
+            subtotalEl.innerText = `Rs ${subtotal.toFixed(2)}`;
+            discountEl.innerText = `Rs ${DISCOUNT.toFixed(2)}`;
+            shippingEl.innerText = `Rs ${SHIPPING.toFixed(2)}`;
+            totalEl.innerText = `Rs ${grandTotal}`;
+        }
+
+        function removeFromCart(id) {
+            fetch(`/api/inventory/cart/remove/${id}`, {
+                method: 'DELETE',
+                headers: API_HEADERS
+            })
+            .then(() => loadCart())
+            .catch(err => console.error('Error removing from cart:', err));
+        }
+
+        function updateQuantity(id, quantity) {
+            if (quantity < 1) {
+                removeFromCart(id);
+                return;
+            }
+            fetch(`/api/inventory/cart/update-quantity/${id}?quantity=${quantity}`, {
+                method: 'PUT',
+                headers: API_HEADERS
+            })
+            .then(() => loadCart())
+            .catch(err => console.error('Error updating cart quantity:', err));
+        }
+    </script>
 </body>
 </html>

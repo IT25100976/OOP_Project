@@ -223,19 +223,58 @@
     
     <script>
         /**
-         * Global Search Function:
-         * Captures the user's text input and redirects them to the dedicated Shop page
-         * with the search keyword attached as a URL parameter.
+         * Session and API Header Logic (Inlined from session.js)
+         */
+        function getSessionId() {
+            let sessionId = localStorage.getItem('X-User-Id');
+            if (!sessionId) {
+                if (window.crypto && window.crypto.randomUUID) {
+                    sessionId = window.crypto.randomUUID();
+                } else {
+                    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                }
+                localStorage.setItem('X-User-Id', sessionId);
+            }
+            return sessionId;
+        }
+
+        const API_HEADERS = {
+            'Content-Type': 'application/json',
+            'X-User-Id': getSessionId()
+        };
+
+        /**
+         * Global Search Function
          */
         function storefrontSearch(btn) {
-            // Find the sibling input field within the same parent container
             const input = btn.parentElement.querySelector('input');
             const keyword = input.value.trim();
-            
             if (keyword) {
-                // Redirect to shop.html using the 'search' query parameter
                 window.location.href = 'shop.html?search=' + encodeURIComponent(keyword);
             }
+        }
+
+        /**
+         * Inventory Actions
+         */
+        function addToWishlist(id, name, price, imageUrl) {
+            const item = { id: id, name: name, price: price, quantity: 1, imageUrl: imageUrl };
+            fetch('/api/inventory/wishlist/add', {
+                method: 'POST',
+                headers: API_HEADERS,
+                body: JSON.stringify(item)
+            }).then(() => alert(name + ' added to wishlist!'))
+              .catch(err => console.error(err));
+        }
+
+        function addToCart(id, name, price, imageUrl) {
+            const item = { id: id, name: name, price: price, quantity: 1, imageUrl: imageUrl };
+            fetch('/api/inventory/cart/add', {
+                method: 'POST',
+                headers: API_HEADERS,
+                body: JSON.stringify(item)
+            }).then(() => alert(name + ' added to cart!'))
+              .catch(err => console.error(err));
         }
     </script>
 
@@ -384,7 +423,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P001', 'Cauliflower', 12.00, './assets/images/product/Cauliflower-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -413,7 +452,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P001', 'Cauliflower', 12.00, './assets/images/product/Cauliflower-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -425,7 +464,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P002', 'Potato', 8.00, './assets/images/product/potato-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -454,7 +493,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P002', 'Potato', 8.00, './assets/images/product/potato-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -466,7 +505,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P003', 'Onion', 9.00, './assets/images/product/onion-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -495,7 +534,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P003', 'Onion', 9.00, './assets/images/product/onion-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -508,7 +547,7 @@
                                         <div class="card-body pt-0">
                                             
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P004', 'Mango', 30.00, './assets/images/product/Mango-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -537,7 +576,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P004', 'Mango', 30.00, './assets/images/product/Mango-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -549,7 +588,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P005', 'Watermelon', 4.00, './assets/images/product/Watermelon-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -578,7 +617,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P005', 'Watermelon', 4.00, './assets/images/product/Watermelon-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -590,7 +629,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P006', 'Carrot', 6.00, './assets/images/product/Carrot-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -619,7 +658,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P006', 'Carrot', 6.00, './assets/images/product/Carrot-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -631,7 +670,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P007', 'Banana', 8.00, './assets/images/product/banana-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -660,7 +699,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P007', 'Banana', 8.00, './assets/images/product/banana-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -672,7 +711,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P008', 'Coriander Leaves', 3.00, './assets/images/product/coriander-leaves-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -701,7 +740,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P008', 'Coriander Leaves', 3.00, './assets/images/product/coriander-leaves-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -722,7 +761,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P009', 'Apple', 6.00, './assets/images/product/Apple-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -751,7 +790,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P009', 'Apple', 6.00, './assets/images/product/Apple-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -763,7 +802,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P010', 'Chilli', 12.00, './assets/images/product/Chilli-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -792,7 +831,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P010', 'Chilli', 12.00, './assets/images/product/Chilli-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -804,7 +843,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P011', 'Coconut', 14.00, './assets/images/product/Coconut-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -833,7 +872,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P011', 'Coconut', 14.00, './assets/images/product/Coconut-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -845,7 +884,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P012', 'Cucumber', 8.00, './assets/images/product/Cucumber-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -874,7 +913,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P012', 'Cucumber', 8.00, './assets/images/product/Cucumber-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -886,7 +925,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P013', 'Grapes', 21.00, './assets/images/product/Grapes-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -915,7 +954,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P013', 'Grapes', 21.00, './assets/images/product/Grapes-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -927,7 +966,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P014', 'Lettuce Romaine', 17.00, './assets/images/product/Lettuce-Romaine-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -956,7 +995,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P014', 'Lettuce Romaine', 17.00, './assets/images/product/Lettuce-Romaine-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -968,7 +1007,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P015', 'Muskmelon', 12.00, './assets/images/product/Muskmelon-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -997,7 +1036,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P015', 'Muskmelon', 12.00, './assets/images/product/Muskmelon-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1009,7 +1048,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P016', 'Orange', 16.00, './assets/images/product/Orange-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -1038,7 +1077,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P016', 'Orange', 16.00, './assets/images/product/Orange-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1059,7 +1098,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P017', 'Papaya', 13.00, './assets/images/product/Papaya-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -1088,7 +1127,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P017', 'Papaya', 13.00, './assets/images/product/Papaya-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1100,7 +1139,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P018', 'Snibs Peppers', 9.00, './assets/images/product/Snibs-Peppers-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>
@@ -1129,7 +1168,7 @@
                                             </div>
                                         </div>
                                         <div class="product-footer">
-                                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                                            <a href="javascript:void(0)" onclick="addToCart('P018', 'Snibs Peppers', 9.00, './assets/images/product/Snibs-Peppers-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1141,7 +1180,7 @@
                                         </a>
                                         <div class="card-body pt-0">
                                             <div class="icons">
-                                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                                <a href="javascript:void(0)" onclick="addToWishlist('P019', 'Strawberry', 18.00, './assets/images/product/Strawberry-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                                         class="bi bi-heart"></i> </a>
                                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                                         class="bi bi-eye"></i></a>

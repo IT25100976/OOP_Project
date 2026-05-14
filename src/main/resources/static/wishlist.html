@@ -240,50 +240,12 @@
                             <div class="p-5">
                                 <div class="d-flex justify-content-between align-items-center mb-5">
                                     <h1 class="fw-bold mb-0 text-black text-uppercase">Wishlist</h1>
-                                    <h5 class="mb-0  fw-bold border py-2 px-4 text-muted">2 Items</h5>
+                                    <h5 class="mb-0  fw-bold border py-2 px-4 text-muted" id="itemCount">0 Items</h5>
                                 </div>
                                 <hr class="my-4">
-                                <!-- Item -->
-                                <div class="mb-4 d-flex justify-content-between align-items-center overflow-x-auto border-bottom pb-4">
-                                    <div class="col-md-2 col-lg-2 col-xl-2 col-3 col-sm-3">
-                                        <img src="./assets/images/product/Apple-first.png" class="img-fluid rounded-3" width="100" alt="Apple-first">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3 col-4 col-sm-4 mx-3">
-                                        <p class="text-black mb-0 h5">Apple</p>
-                                        <span class="mt-2">Rs 168</span>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 col-3 col-sm-3">
-                                        <span class="badge bg-success">In Stock</span>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 col-3 col-sm-3">
-                                        <a href="cart.html" class="btn btn-md btn-primary py-2 rounded"><span class="bi bi-cart mx-2"></span></a>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-center col-1 col-sm-1">
-                                        <a href="#" class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                         </a>
-                                    </div>
-                                </div>
-                                <!-- Item -->
-                                <div class="mb-4 d-flex justify-content-between align-items-center overflow-x-auto border-bottom pb-4">
-                                    <div class="col-md-2 col-lg-2 col-xl-2 col-3 col-sm-3">
-                                        <img src="./assets/images/product/banana-first.png" class="img-fluid rounded-3" width="100" alt="banana-first">
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-3 col-4 col-sm-4 mx-3">
-                                        <p class="text-black mb-0 h5">Banana</p>
-                                        <span class="mt-2">Rs 68</span>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3 col-xl-2 col-3 col-sm-3">
-                                        <span class="badge bg-success">In Stock</span>
-                                    </div>
-                                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 col-3 col-sm-3">
-                                        <a href="cart.html" class="btn btn-md btn-primary py-2 rounded"><span class="bi bi-cart mx-2"></span></a>
-                                    </div>
-                                    <div class="col-md-1 col-lg-1 col-xl-1 text-center col-1 col-sm-1">
-                                        <a href="#" class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top" aria-label="Delete" data-bs-original-title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                         </a>
-                                    </div>
+                                <!-- Backend Connection: The div below is populated by wishlist-api.js fetching from /api/inventory/wishlist -->
+                                <div id="wishlistContainer">
+                                    <!-- Items will be injected here via JavaScript -->
                                 </div>
                                 
                             </div>
@@ -394,5 +356,110 @@
     <script src="./assets/plugin/slick/slick.min.js"></script>
     <script src="./assets/js/timer.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script>
+        /**
+         * Session and API Header Logic (Inlined)
+         */
+        function getSessionId() {
+            let sessionId = localStorage.getItem('X-User-Id');
+            if (!sessionId) {
+                if (window.crypto && window.crypto.randomUUID) {
+                    sessionId = window.crypto.randomUUID();
+                } else {
+                    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                }
+                localStorage.setItem('X-User-Id', sessionId);
+            }
+            return sessionId;
+        }
+
+        const API_HEADERS = {
+            'Content-Type': 'application/json',
+            'X-User-Id': getSessionId()
+        };
+
+        /**
+         * Wishlist API Logic (Inlined)
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadWishlist();
+        });
+
+        function loadWishlist() {
+            fetch('/api/inventory/wishlist', { headers: API_HEADERS })
+                .then(response => response.json())
+                .then(data => {
+                    renderWishlist(data);
+                })
+                .catch(err => console.error('Error loading wishlist:', err));
+        }
+
+        function renderWishlist(items) {
+            const container = document.getElementById('wishlistContainer');
+            const itemCount = document.getElementById('itemCount');
+            if (!container) return;
+
+            itemCount.innerText = `${items.length} Items`;
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = '<p class="text-center text-muted mt-4 py-4"><i class="bi bi-heart fs-1 d-block mb-2"></i>Your wishlist is empty. Browse the <a href="shop.html">shop</a> to add items!</p>';
+                return;
+            }
+
+            items.forEach(item => {
+                const itemHtml = `
+                <div class="mb-4 d-flex justify-content-between align-items-center overflow-x-auto border-bottom pb-4">
+                    <div class="col-md-2 col-lg-2 col-xl-2 col-3 col-sm-3">
+                        <img src="${item.imageUrl}" class="img-fluid rounded-3" width="100" alt="${item.name}">
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-3 col-4 col-sm-4 mx-3">
+                        <p class="text-black mb-0 h5">${item.name}</p>
+                        <span class="mt-2 text-success fw-semibold">Rs ${item.price}</span>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-2 col-3 col-sm-3">
+                        <span class="badge bg-success">In Stock</span>
+                    </div>
+                    <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1 col-3 col-sm-3">
+                        <button onclick="moveToCart('${item.id}')" class="btn btn-md btn-primary py-2 rounded" title="Add to Cart">
+                            <span class="bi bi-cart mx-2"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-xl-1 text-center col-1 col-sm-1">
+                        <button onclick="removeFromWishlist('${item.id}')" class="btn btn-link text-muted p-0" title="Remove from Wishlist">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>`;
+                container.insertAdjacentHTML('beforeend', itemHtml);
+            });
+        }
+
+        function removeFromWishlist(id) {
+            fetch(`/api/inventory/wishlist/remove/${id}`, {
+                method: 'DELETE',
+                headers: API_HEADERS
+            })
+            .then(() => loadWishlist())
+            .catch(err => console.error('Error removing from wishlist:', err));
+        }
+
+        function moveToCart(id) {
+            fetch(`/api/inventory/wishlist/move-to-cart/${id}`, {
+                method: 'POST',
+                headers: API_HEADERS
+            })
+            .then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'alert alert-success position-fixed bottom-0 end-0 m-3';
+                toast.style.zIndex = '9999';
+                toast.textContent = 'Item moved to cart!';
+                document.body.appendChild(toast);
+                setTimeout(() => toast.remove(), 2500);
+                loadWishlist();
+            })
+            .catch(err => console.error('Error moving to cart:', err));
+        }
+    </script>
 </body>
 </html>
