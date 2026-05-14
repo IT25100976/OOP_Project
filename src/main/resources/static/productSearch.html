@@ -153,6 +153,11 @@
     <div id="notification"></div>
 
     <script>
+        // Security check
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
         async function handleSearch() {
             const keyword = document.getElementById('searchInput').value.trim();
             if(!keyword) return;

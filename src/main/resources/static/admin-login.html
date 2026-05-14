@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyMart - Admin Login</title>
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        
+        :root {
+            --brand-green: #82b440;
+            --brand-green-hover: #72a034;
+            --bg-light: #f5f7f9;
+            --input-bg: #eef2ff;
+        }
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Nunito', sans-serif;
+            margin: 0;
+        }
+        .login-wrapper {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+        .login-card {
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-top: 15px solid var(--brand-green);
+            padding: 40px 35px;
+        }
+        .brand-logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .brand-title {
+            font-weight: 900;
+            color: var(--brand-green);
+            font-size: 1.8rem;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+        .brand-subtitle {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+        .alert-custom {
+            background-color: #fff1f2;
+            border: 1px solid #ffe4e6;
+            color: #e11d48;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .alert-success-custom {
+            background-color: #f0fdf4;
+            border: 1px solid #dcfce7;
+            color: #16a34a;
+        }
+        .form-label {
+            font-weight: 700;
+            color: #334155;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .input-group {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .input-group-text {
+            background-color: #ffffff;
+            border: none;
+            border-right: 1px solid #cbd5e1;
+            color: #64748b;
+            padding: 10px 15px;
+            border-radius: 0;
+        }
+        .form-control {
+            background-color: var(--input-bg);
+            border: none;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            color: #1e293b;
+            font-weight: 600;
+            border-radius: 0;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            background-color: #e0e7ff;
+        }
+        .form-control::placeholder {
+            color: #94a3b8;
+            font-weight: 400;
+        }
+        .btn-login {
+            background-color: var(--brand-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .btn-login:hover {
+            background-color: var(--brand-green-hover);
+            color: white;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .back-link:hover {
+            color: #64748b;
+        }
+        .change-pw-section {
+            display: none;
+            margin-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        .change-pw-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <div class="brand-logo">
+            <div class="brand-title">GROCERYBASKET</div>
+            <div class="brand-subtitle">Admin Panel Access</div>
+        </div>
+        
+        <div id="alertBox" class="alert-custom d-none">
+            <i class="bi bi-exclamation-circle me-1" id="alertIcon"></i> <span id="alertText">Invalid Login</span>
+        </div>
+
+        <form id="adminLoginForm">
+            <div>
+                <label class="form-label">Email Address</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control" id="username" placeholder="admin@dailymart.com" required>
+                </div>
+            </div>
+            <div>
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-login">Login Now &rarr;</button>
+        </form>
+
+        <a href="#" id="changePasswordLink" class="back-link mb-2"><i class="bi bi-shield-lock me-1"></i> Update Credentials?</a>
+
+        <div id="changePasswordSection" class="change-pw-section">
+            <h6 class="fw-bold mb-3 text-dark text-center" style="font-size: 0.9rem;">Set New Credentials</h6>
+            <form id="changePasswordForm">
+                <div class="mb-2">
+                    <input type="email" class="form-control rounded" id="newUsername" placeholder="New Email" required style="background: #f8fafc; border: 1px solid #cbd5e1;">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control rounded" id="newPassword" placeholder="New Password" required style="background: #f8fafc; border: 1px solid #cbd5e1;">
+                </div>
+                <button type="submit" class="btn btn-login" style="padding: 8px;">Save Changes</button>
+            </form>
+        </div>
+
+        <a href="index.html" class="back-link">&larr; Back to Shop</a>
+    </div>
+</div>
+
+<script>
+    const loginForm = document.getElementById('adminLoginForm');
+    const alertBox = document.getElementById('alertBox');
+    const alertText = document.getElementById('alertText');
+    const alertIcon = document.getElementById('alertIcon');
+    const changePasswordLink = document.getElementById('changePasswordLink');
+    const changePasswordSection = document.getElementById('changePasswordSection');
+    const changePasswordForm = document.getElementById('changePasswordForm');
+
+    function showAlert(message, isSuccess) {
+        alertBox.className = isSuccess ? 'alert-custom alert-success-custom' : 'alert-custom';
+        alertIcon.className = isSuccess ? 'bi bi-check-circle me-1' : 'bi bi-exclamation-circle me-1';
+        alertText.textContent = message;
+        alertBox.classList.remove('d-none');
+    }
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        btn.disabled = true;
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                showAlert("Invalid Login", false);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            showAlert('Connection error', false);
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+
+    changePasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        changePasswordSection.classList.toggle('active');
+    });
+
+    changePasswordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Updating...';
+        btn.disabled = true;
+
+        const username = document.getElementById('newUsername').value;
+        const password = document.getElementById('newPassword').value;
+
+        try {
+            const response = await fetch('/api/admin/change-password', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (response.ok) {
+                showAlert('Credentials updated!', true);
+                changePasswordSection.classList.remove('active');
+                changePasswordForm.reset();
+            } else {
+                showAlert('Failed to update.', false);
+            }
+        } catch (error) {
+            showAlert('Connection error', false);
+        } finally {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>

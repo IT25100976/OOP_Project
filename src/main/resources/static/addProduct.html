@@ -164,6 +164,11 @@
     <div id="notification"></div>
 
     <script>
+        // Security check
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
         function toggleCategoryFields() {
             const select = document.getElementById('category');
             const selectedOption = select.options[select.selectedIndex];

@@ -1,6 +1,5 @@
 John,Doe,john@example.com,Chamidu
 Deshan,Sandeep,Sandeep@my.sliit.lk,123123
 Shatish,Dileepa,dileepz@ex.com,123123
-arani,arani,arani123@gmail.com,pandithaNa
 sandeep,malgahamuduna,ggboys@gmail.com,123456
 sandeep,malgahamuduna,ggboys@gmail.com,12345

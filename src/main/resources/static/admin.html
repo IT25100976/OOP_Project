@@ -212,6 +212,33 @@
                     </div>
                 </div>
             </div>
+
+            <!-- User Management Section -->
+            <h4 class="mb-4 fw-bold mt-5">User Management</h4>
+            <div class="admin-card p-4">
+                <div class="d-flex justify-content-between mb-4">
+                    <h5 class="fw-bold mb-0">Registered Users</h5>
+                    <div class="input-group" style="max-width: 300px;">
+                        <input type="text" id="userSearchEmail" class="form-control bg-dark text-white border-secondary" placeholder="Search by email..." onkeyup="filterUsers()">
+                        <span class="input-group-text bg-dark border-secondary text-muted"><i class="bi bi-search"></i></span>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0" style="background-color: transparent;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.1);">
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <tr><td colspan="4" class="text-center text-muted">Loading users...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -222,8 +249,14 @@
     </footer>
 
     <script>
+        // Security check
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             fetchStats();
+            fetchUsers();
         });
 
         async function fetchStats() {
@@ -267,6 +300,66 @@
                         el.title = 'Please ensure the Spring Boot application is running on port 8080';
                     }
                 });
+            }
+        }
+
+        async function fetchUsers() {
+            try {
+                const res = await fetch('/api/admin/users');
+                if (res.ok) {
+                    const users = await res.json();
+                    renderUsers(users);
+                }
+            } catch (err) {
+                console.error("Failed to load users", err);
+            }
+        }
+
+        function renderUsers(users) {
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="text-center text-muted">No users found</td></tr>';
+                return;
+            }
+            users.forEach(u => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${u.firstName}</td>
+                    <td>${u.lastName}</td>
+                    <td class="user-email">${u.email}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u.email}')">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function deleteUser(email) {
+            if (!confirm(`Are you sure you want to delete user ${email}?`)) return;
+            try {
+                const res = await fetch(`/api/admin/users/${email}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert('User deleted successfully!');
+                    fetchUsers();
+                } else {
+                    alert('Failed to delete user.');
+                }
+            } catch (err) {
+                console.error("Delete failed", err);
+            }
+        }
+
+        function filterUsers() {
+            const filter = document.getElementById('userSearchEmail').value.toLowerCase();
+            const rows = document.getElementById('userTableBody').getElementsByTagName('tr');
+            for (let i = 0; i < rows.length; i++) {
+                const emailCol = rows[i].querySelector('.user-email');
+                if (emailCol) {
+                    const email = emailCol.innerText.toLowerCase();
+                    rows[i].style.display = email.includes(filter) ? '' : 'none';
+                }
             }
         }
     </script>

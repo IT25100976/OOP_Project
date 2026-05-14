@@ -155,6 +155,11 @@
     <div id="notification"></div>
 
     <script>
+        // Security check
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+
         document.addEventListener("DOMContentLoaded", fetchProducts);
 
         async function fetchProducts() {
