@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews | GroceryBasket eCommerce</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nice-select/nice-select.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nouislider/nouislider.min.css">
+    <link rel="stylesheet" href="./assets/plugin/slick/slick.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        /* ── Review cards ── */
+        .review-card {
+            border-left: 5px solid #82ae46;
+            border-radius: 10px;
+            transition: box-shadow .25s;
+        }
+        .review-card:hover { box-shadow: 0 8px 24px rgba(130,174,70,.18) !important; }
+
+        /* ── Star colours ── */
+        .stars { color: #f5a623; font-size: 1.15rem; letter-spacing: 2px; }
+
+        /* ── Rating badge ── */
+        .rating-badge {
+            background-color: #82ae46;
+            color: #fff;
+            border-radius: 50%;
+            width: 42px; height: 42px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* ── Average score circle ── */
+        .avg-circle {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            background: #82ae46;
+            color: #fff;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-size: 1.8rem; font-weight: 700;
+            line-height: 1;
+        }
+        .avg-circle span { font-size: .7rem; font-weight: 400; }
+
+        /* ── Section title ── */
+        .section-title-green { color: #82ae46; font-weight: 700; }
+        .breadcrumb-item a   { color: #82ae46; }
+
+        /* ── Write review button ── */
+        .btn-write {
+            background-color: #82ae46;
+            border-color:     #82ae46;
+            border-radius: 30px;
+            font-weight: 600;
+            padding: 10px 28px;
+        }
+        .btn-write:hover { background-color: #6b9438; border-color: #6b9438; }
+
+        /* ── Sort / filter bar ── */
+        .filter-bar select {
+            border-radius: 30px;
+            border-color: #dee2e6;
+            padding: 6px 16px;
+            font-size: .9rem;
+        }
+
+        /* ── Skeleton loader ── */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 6px;
+        }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        /* ── Empty state ── */
+        .empty-icon { font-size: 4rem; color: #dee2e6; }
+
+        /* ── Toast notification ── */
+        #successToast {
+            position: fixed; bottom: 30px; right: 30px; z-index: 9999;
+            min-width: 280px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ========== HEADER START ========== -->
+<header class="navigation shadow-sm border-bottom">
+    <div class="navbar-sticky">
+
+        <!-- Top Navbar -->
+        <div class="navbar navbar-middle navbar-expand-lg mt-lg-3">
+            <div class="container">
+                <a class="navbar-brand flex-shrink-0" href="index.html">
+                    <img src="./assets/images/logo.png" class="logo main-logo" alt="GroceryBasket">
+                </a>
+                <div class="input-group d-none d-lg-flex me-5">
+                    <input class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                    <select class="form-select flex-shrink-0" style="max-width:11rem;">
+                        <option>All categories</option>
+                        <option>Fruits &amp; Vegetables</option>
+                        <option>Cuts &amp; Sprouts</option>
+                        <option>Exotic Fruits</option>
+                        <option>Flower Bouquets</option>
+                        <option>Fresh Fruits</option>
+                        <option>Herbs &amp; Seasonings</option>
+                        <option>Organic Fruits</option>
+                        <option>Fresh Vegetables</option>
+                    </select>
+                    <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block">Search</button>
+                </div>
+                <div class="list-inline d-flex">
+                    <div class="list-inline-item me-4">
+                        <a href="login.html" class="text-muted"><i class="bi bi-person"></i></a>
+                    </div>
+                    <div class="list-inline-item me-4">
+                        <a href="wishlist.html" class="text-muted position-relative">
+                            <i class="bi bi-heart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">5</span>
+                        </a>
+                    </div>
+                    <div class="list-inline-item me-4">
+                        <a href="cart.html" class="text-muted position-relative">
+                            <i class="bi bi-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">1</span>
+                        </a>
+                    </div>
+                    <div class="list-inline-item d-inline-block d-lg-none">
+                        <button class="navbar-toggler border-0 collapsed" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#navbar-default"
+                                aria-controls="navbar-default" aria-label="Toggle navigation">
+                            <i class="bi bi-text-indent-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main green nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-light navbar-default py-lg-2 py-md-0 py-0 py-sm-0 bg-color mt-lg-3"
+             aria-label="Offcanvas navbar large">
+            <div class="container">
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default"
+                     aria-labelledby="navbar-defaultLabel">
+                    <div class="offcanvas-header pb-1">
+                        <a href="index.html">
+                            <img src="./assets/images/logo.png" class="logo" alt="GroceryBasket">
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <!-- Mobile search -->
+                        <div class="d-block d-lg-none mb-4">
+                            <div class="input-group me-5">
+                                <input class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                                <select class="form-select flex-shrink-0" style="max-width:11rem;">
+                                    <option>All categories</option>
+                                    <option>Fruits &amp; Vegetables</option>
+                                    <option>Notebooks</option>
+                                    <option>Smartphones</option>
+                                    <option>TV, Monitors</option>
+                                    <option>Cameras</option>
+                                    <option>Headphones</option>
+                                    <option>Storage</option>
+                                </select>
+                                <button type="button" class="btn btn-primary bg-gradient">Search</button>
+                            </div>
+                        </div>
+                        <div>
+                            <ul class="navbar-nav align-items-center">
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link" href="index.html">Home</a>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="shop.html">Shop Page - Filter</a></li>
+                                        <li><a class="dropdown-item" href="shop-single.html">Shop Single</a></li>
+                                        <li><a class="dropdown-item" href="wishlist.html">Shop Wishlist</a></li>
+                                        <li><a class="dropdown-item" href="cart.html">Shop Cart</a></li>
+                                        <li><a class="dropdown-item" href="checkout.html">Shop Checkout</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Mega menu</a>
+                                    <div class="dropdown-menu pb-0">
+                                        <div class="row p-2 p-lg-4">
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Fruits &amp; Vegetables</h6>
+                                                <a class="dropdown-item" href="#">Cuts &amp; Sprouts</a>
+                                                <a class="dropdown-item" href="#">Exotic Fruits &amp; Veggies</a>
+                                                <a class="dropdown-item" href="#">Flower Bouquets, Bunches</a>
+                                                <a class="dropdown-item" href="#">Fresh Fruits</a>
+                                                <a class="dropdown-item" href="#">Fresh Vegetables</a>
+                                                <a class="dropdown-item" href="#">Herbs &amp; Seasonings</a>
+                                                <a class="dropdown-item" href="#">Organic Fruits</a>
+                                                <a class="dropdown-item" href="#">Organic Vegetables</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Foodgrains, Oil &amp; Masala</h6>
+                                                <a class="dropdown-item" href="#">Atta, Flours &amp; Sooji</a>
+                                                <a class="dropdown-item" href="#">Dals &amp; Pulses</a>
+                                                <a class="dropdown-item" href="#">Dry Fruits</a>
+                                                <a class="dropdown-item" href="#">Edible Oils &amp; Ghee</a>
+                                                <a class="dropdown-item" href="#">Masalas &amp; Spices</a>
+                                                <a class="dropdown-item" href="#">Organic Staples</a>
+                                                <a class="dropdown-item" href="#">Rice &amp; Rice Products</a>
+                                                <a class="dropdown-item" href="#">Salt, Sugar &amp; Jaggery</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Bakery, Cakes &amp; Dairy</h6>
+                                                <a class="dropdown-item" href="#">Appliances &amp; Electricals</a>
+                                                <a class="dropdown-item" href="#">Breads &amp; Buns</a>
+                                                <a class="dropdown-item" href="#">Cakes &amp; Pastries</a>
+                                                <a class="dropdown-item" href="#">Cookies, Rusk &amp; Khari</a>
+                                                <a class="dropdown-item" href="#">Dairy</a>
+                                                <a class="dropdown-item" href="#">Gourmet Breads</a>
+                                                <a class="dropdown-item" href="#">Ice Creams &amp; Desserts</a>
+                                                <a class="dropdown-item" href="#">Non Dairy</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0 menu-offer">
+                                                <div class="position-relative shine">
+                                                    <img src="./assets/images/category/special-offer.png"
+                                                         class="rounded w-100" alt="Special Offer">
+                                                    <div class="position-absolute ps-6 mt-8 top-0 p-4">
+                                                        <h5 class="mb-0">Dont miss this<br>offer today.</h5>
+                                                        <a href="#" class="btn btn-cart btn-sm mt-3">Shop Now</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- Pages — Feedback & All Reviews linked -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                                        <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
+                                        <li><a class="dropdown-item" href="about.html">About us</a></li>
+                                        <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                                        <li><a class="dropdown-item" href="feedback.html">Feedback</a></li>
+                                        <li><a class="dropdown-item active" href="allReviews.html">All Reviews</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="login.html">Sign in</a></li>
+                                        <li><a class="dropdown-item" href="signup.html">Signup</a></li>
+                                        <li><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="admin.html">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="productListing.html">View Inventory</a></li>
+                                        <li><a class="dropdown-item" href="addProduct.html">Add Product</a></li>
+                                        <li><a class="dropdown-item" href="productSearch.html">Search Product</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Feedback</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="Feedback.html">Feedback</a></li>
+                                        <li><a class="dropdown-item" href="Allreviews.html">Feedback review</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+</header>
+<!-- ========== HEADER END ========== -->
+
+
+<main>
+    <!-- Breadcrumb -->
+    <div class="mt-4">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="feedback.html">Feedback</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">All Reviews</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ===== SUMMARY BAR ===== -->
+    <section class="py-4 bg-white border-bottom">
+        <div class="container">
+            <div class="row align-items-center gy-3">
+
+                <!-- Left: title + count -->
+                <div class="col-lg-4">
+                    <h2 class="section-title-green mb-0">Customer Reviews</h2>
+                    <p class="text-muted mb-0" id="reviewCountLabel" style="font-size:.9rem;">
+                        Loading reviews…
+                    </p>
+                </div>
+
+                <!-- Centre: average score -->
+                <div class="col-lg-4 text-center">
+                    <div class="d-flex align-items-center justify-content-center gap-3">
+                        <div class="avg-circle" id="avgCircle">–</div>
+                        <div>
+                            <div class="stars" id="avgStars">☆☆☆☆☆</div>
+                            <small class="text-muted">Average rating</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: write a review button -->
+                <div class="col-lg-4 text-lg-end">
+                    <a href="feedback.html" class="btn btn-primary btn-write text-white">
+                        <i class="bi bi-pencil-square me-1"></i> Write a Review
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FILTER / SORT BAR ===== -->
+    <section class="py-3 bg-light border-bottom">
+        <div class="container">
+            <div class="row align-items-center filter-bar gy-2">
+                <div class="col-auto">
+                    <label class="form-label mb-0 me-2 fw-semibold" style="font-size:.9rem;">Filter by rating:</label>
+                    <select id="filterRating" onchange="applyFilter()" class="form-select d-inline-block w-auto">
+                        <option value="0">All ratings</option>
+                        <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733; 5</option>
+                        <option value="4">&#9733;&#9733;&#9733;&#9733;&#9734; 4</option>
+                        <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734; 3</option>
+                        <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734; 2</option>
+                        <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734; 1</option>
+                    </select>
+                </div>
+                <div class="col-auto ms-auto">
+                    <label class="form-label mb-0 me-2 fw-semibold" style="font-size:.9rem;">Sort:</label>
+                    <select id="sortOrder" onchange="applyFilter()" class="form-select d-inline-block w-auto">
+                        <option value="newest">Newest first</option>
+                        <option value="oldest">Oldest first</option>
+                        <option value="high">Highest rating</option>
+                        <option value="low">Lowest rating</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== REVIEWS LIST ===== -->
+    <section class="py-5">
+        <div class="container">
+
+            <!-- Skeleton loaders shown while fetching -->
+            <div id="skeletonLoader">
+                <div class="card shadow-sm mb-4 p-4 review-card" style="border-left:5px solid #dee2e6;">
+                    <div class="skeleton mb-3" style="height:18px;width:40%;"></div>
+                    <div class="skeleton mb-2" style="height:14px;width:20%;"></div>
+                    <div class="skeleton mb-2" style="height:14px;width:100%;"></div>
+                    <div class="skeleton"      style="height:14px;width:75%;"></div>
+                </div>
+                <div class="card shadow-sm mb-4 p-4 review-card" style="border-left:5px solid #dee2e6;">
+                    <div class="skeleton mb-3" style="height:18px;width:50%;"></div>
+                    <div class="skeleton mb-2" style="height:14px;width:25%;"></div>
+                    <div class="skeleton mb-2" style="height:14px;width:100%;"></div>
+                    <div class="skeleton"      style="height:14px;width:60%;"></div>
+                </div>
+            </div>
+
+            <!-- Actual review cards injected here -->
+            <div id="reviewList"></div>
+
+            <!-- Empty state -->
+            <div id="emptyState" class="text-center py-5 d-none">
+                <div class="empty-icon mb-3"><i class="bi bi-chat-square-text"></i></div>
+                <h5 class="text-muted">No reviews yet</h5>
+                <p class="text-muted">Be the first to share your experience!</p>
+                <a href="feedback.html" class="btn btn-primary btn-write text-white mt-2">
+                    Write the first review
+                </a>
+            </div>
+
+            <!-- No results for current filter -->
+            <div id="noFilterResult" class="text-center py-4 d-none">
+                <p class="text-muted">No reviews match the selected filter.</p>
+                <button class="btn btn-outline-secondary btn-sm" onclick="resetFilter()">Clear filter</button>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+
+<!-- ===== FEATURE STRIP (matches index.html) ===== -->
+<div class="feature-section mt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="white-bg">
+                    <div class="row">
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/delivery-truck.png" class="w-100" alt="Free Shipping">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Free Shipping</h4>
+                                    <p>On orders over&nbsp;<strong>Rs 50.</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/loan.png" class="w-100" alt="Money Back">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Money Back</h4>
+                                    <p>Money back in 7 days.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/credit-card.png" class="w-100" alt="Secure Checkout">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Secure Checkout</h4>
+                                    <p>100% Payment Secure.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/customer-service.png" class="w-100" alt="Online Support">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Online Support</h4>
+                                    <p>Ensure the product quality</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== FOOTER (matches index.html) ===== -->
+<footer class="mt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-md-0">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="footer_logo">
+                            <img loading="lazy" src="./assets/images/logo.png" class="logo" alt="easy shop">
+                        </div>
+                        <div class="mt-4">
+                            <p>Lorem ipsum, or lipsum as it is sometimes kno wn, is dummy text used in laying out print,
+                                gra phic or web designs the passage.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="footer_newsletter pe-lg-5">
+                            <h4 class="text-uppercase">Newsletter</h4>
+                            <div class="input-group">
+                                <input class="form-control w-50" type="text" placeholder="Your email address">
+                                <button type="button" class="btn btn-primary bg-gradient">Subscribe</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3 mb-md-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="footer_menu">
+                            <h4 class="footer_title">My Account</h4>
+                            <ul class="m-0 p-0 list-unstyled">
+                                <li><a href="#">Orders</a></li>
+                                <li><a href="#">Wishlist</a></li>
+                                <li><a href="#">Track Order</a></li>
+                                <li><a href="#">Manage Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="footer_menu">
+                            <h4 class="footer_title">Information</h4>
+                            <ul class="m-0 p-0 list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Return Policy</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="footer_download">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-12">
+                            <h4 class="footer_title">Contact</h4>
+                            <div class="footer_contact">
+                                <p>
+                                    <span class="icn"><i class="bi bi-geo-alt"></i></span>
+                                    Widgetify Inc.<br>
+                                    456 Gadget Avenue Techtown, TX 67890<br>
+                                    United States of America
+                                </p>
+                                <p class="phn">
+                                    <span class="icn"><i class="bi bi-telephone"></i></span>
+                                    (987) 654-3210, (555) 123-4567
+                                </p>
+                                <p class="eml">
+                                    <span class="icn"><i class="bi bi-envelope"></i></span>
+                                    info@example.com
+                                </p>
+                            </div>
+                        </div>
+                        <div class="footer_social col-lg-6 col-lg-12">
+                            <div class="footer_icon d-flex mt-1">
+                                <a href="#" class="facebook pe-3"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="twitter pe-3"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="instagram pe-3"><i class="bi bi-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- Toast: shown when user arrives after submitting a review -->
+<div id="successToast" class="toast align-items-center text-white border-0 d-none"
+     style="background-color:#82ae46;" role="alert" aria-live="assertive">
+    <div class="d-flex">
+        <div class="toast-body">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            Your review was posted successfully!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto"
+                onclick="document.getElementById('successToast').classList.add('d-none')"></button>
+    </div>
+</div>
+
+
+<!-- Scripts — identical order to all other pages -->
+<script src="./assets/js/jquery-3.6.0.min.js"></script>
+<script src="./assets/js/bootstrap.bundle.min.js"></script>
+<script src="./assets/js/jquery.ez-plus.js"></script>
+<script src="./assets/plugin/nice-select/jquery.nice-select.min.js"></script>
+<script src="./assets/plugin/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
+<script src="./assets/plugin/nouislider/nouislider.min.js"></script>
+<script src="./assets/plugin/slick/slick.min.js"></script>
+<script src="./assets/js/timer.js"></script>
+<script src="./assets/js/main.js"></script>
+
+<!-- ===== REVIEWS LOGIC ===== -->
+<script>
+    /*
+     * DATA FLOW
+     * ─────────
+     * 1. Page loads  →  fetch GET /api/feedbacks
+     *    →  FeedbackController.java  (@GetMapping("/feedbacks"))
+     *    →  FeedbackService.java reads feedbacks.txt line by line
+     *    →  Returns JSON array: [{name, email, rating, message}, …]
+     *
+     * 2. feedbacks.txt line format (written by FeedbackService.saveFeedback):
+     *       timestamp,name,email,rating,message
+     *    split(",", 5) ensures the message (which may contain commas) stays intact.
+     *
+     * 3. After a user submits on feedback.html, they are redirected here
+     *    with ?submitted=1 in the URL so a success toast is shown.
+     */
+    const API_BASE  = '/api';
+    let allReviews  = [];   // full list from server
+    let shown       = [];   // filtered + sorted list
+
+    /* ── On page load ── */
+    window.addEventListener('DOMContentLoaded', () => {
+        // Show success toast if redirected from feedback.html after submit
+        if (new URLSearchParams(window.location.search).get('submitted') === '1') {
+            const toast = document.getElementById('successToast');
+            toast.classList.remove('d-none');
+            setTimeout(() => toast.classList.add('d-none'), 5000);
+        }
+        loadReviews();
+    });
+
+    /* ── Fetch all reviews from the backend ── */
+    async function loadReviews() {
+        try {
+            const res  = await fetch(`${API_BASE}/feedbacks`);
+            if (!res.ok) throw new Error('Server error ' + res.status);
+            allReviews = await res.json();    // [{name, email, rating, message}, …]
+            hideSkeleton();
+            applyFilter();                    // render with default sort
+        } catch (err) {
+            hideSkeleton();
+            document.getElementById('reviewList').innerHTML =
+                `<div class="alert alert-danger">
+                    Could not load reviews. Make sure Spring Boot is running on port 8080.<br>
+                    <small class="text-muted">${err.message}</small>
+                 </div>`;
+        }
+    }
+
+    /* ── Apply current filter + sort and re-render ── */
+    function applyFilter() {
+        const filterVal = parseInt(document.getElementById('filterRating').value);
+        const sortVal   = document.getElementById('sortOrder').value;
+
+        // Filter
+        shown = filterVal === 0
+            ? [...allReviews]
+            : allReviews.filter(r => parseInt(r.rating) === filterVal);
+
+        // Sort  (index in array = order of submission; we treat array[0] = oldest)
+        switch (sortVal) {
+            case 'newest': shown.reverse();                                          break;
+            case 'oldest': /* already oldest-first */                                break;
+            case 'high':   shown.sort((a,b) => parseInt(b.rating)-parseInt(a.rating)); break;
+            case 'low':    shown.sort((a,b) => parseInt(a.rating)-parseInt(b.rating)); break;
+        }
+
+        renderReviews();
+        updateSummary();
+    }
+
+    /* ── Reset filter dropdown and re-render ── */
+    function resetFilter() {
+        document.getElementById('filterRating').value = '0';
+        applyFilter();
+    }
+
+    /* ── Build star string ── */
+    function buildStars(n) {
+        n = Math.min(Math.max(parseInt(n), 1), 5);
+        return '★'.repeat(n) + '☆'.repeat(5 - n);
+    }
+
+    /* ── Render review cards ── */
+    function renderReviews() {
+        const container   = document.getElementById('reviewList');
+        const emptyState  = document.getElementById('emptyState');
+        const noFilter    = document.getElementById('noFilterResult');
+
+        // Global empty (no reviews at all)
+        if (allReviews.length === 0) {
+            container.innerHTML = '';
+            emptyState.classList.remove('d-none');
+            noFilter.classList.add('d-none');
+            return;
+        }
+
+        emptyState.classList.add('d-none');
+
+        // Filter produced zero results
+        if (shown.length === 0) {
+            container.innerHTML = '';
+            noFilter.classList.remove('d-none');
+            return;
+        }
+
+        noFilter.classList.add('d-none');
+
+        /*
+         * Each card shows:
+         *   • Reviewer name + avatar initial
+         *   • Star rating  (colour-coded)
+         *   • Masked email (k***@example.com)
+         *   • Review message
+         *   Note: timestamp is stored in feedbacks.txt but the JSON returned
+         *   by FeedbackService only maps the 4 Feedback fields (name, email,
+         *   rating, message).  If you later add a `date` field to Feedback.java,
+         *   replace the static label below with ${r.date}.
+         */
+        container.innerHTML = shown.map((r, idx) => {
+            const stars   = buildStars(r.rating);
+            const initial = (r.name || '?')[0].toUpperCase();
+            const masked  = maskEmail(r.email);
+            // Colour the badge by rating
+            const badgeColor = r.rating >= 4 ? '#82ae46'
+                : r.rating == 3  ? '#f5a623'
+                    :                  '#dc3545';
+            return `
+            <div class="card shadow-sm mb-4 p-4 review-card"
+                 style="animation: fadeIn .4s ease ${idx * .05}s both;">
+                <div class="d-flex align-items-start gap-3">
+
+                    <!-- Avatar -->
+                    <div style="
+                        width:46px; height:46px; border-radius:50%;
+                        background-color:#82ae46; color:#fff;
+                        display:flex; align-items:center; justify-content:center;
+                        font-weight:700; font-size:1.1rem; flex-shrink:0;">
+                        ${initial}
+                    </div>
+
+                    <!-- Content -->
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-1">
+                            <h6 class="mb-0 fw-semibold">${escHtml(r.name)}</h6>
+                            <!-- Rating badge -->
+                            <span style="
+                                background:${badgeColor}; color:#fff;
+                                border-radius:20px; padding:3px 12px;
+                                font-size:.82rem; font-weight:600;">
+                                ${stars} ${r.rating}/5
+                            </span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size:.8rem;">
+                            <i class="bi bi-envelope me-1"></i>${masked}
+                        </p>
+                        <p class="mb-0" style="color:#555; font-style:italic; line-height:1.7;">
+                            "${escHtml(r.message)}"
+                        </p>
+                    </div>
+
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    /* ── Update summary bar (count + average) ── */
+    function updateSummary() {
+        const total = allReviews.length;
+        const label = document.getElementById('reviewCountLabel');
+
+        label.textContent = total === 0
+            ? 'No reviews yet'
+            : `${total} review${total > 1 ? 's' : ''} from our customers`;
+
+        if (total === 0) {
+            document.getElementById('avgCircle').textContent = '–';
+            document.getElementById('avgStars').textContent  = '☆☆☆☆☆';
+            return;
+        }
+
+        const avg = allReviews.reduce((s, r) => s + parseInt(r.rating), 0) / total;
+        document.getElementById('avgCircle').innerHTML =
+            `${avg.toFixed(1)}<span>/ 5</span>`;
+        document.getElementById('avgStars').textContent = buildStars(Math.round(avg));
+    }
+
+    /* ── Helpers ── */
+    function hideSkeleton() {
+        document.getElementById('skeletonLoader').style.display = 'none';
+    }
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;');
+    }
+
+    function maskEmail(email) {
+        if (!email || !email.includes('@')) return email || '';
+        const [local, domain] = email.split('@');
+        return local[0] + '***@' + domain;
+    }
+
+    /* ── Fade-in keyframe (injected so no extra CSS file needed) ── */
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }';
+    document.head.appendChild(style);
+</script>
+
+</body>
+</html>

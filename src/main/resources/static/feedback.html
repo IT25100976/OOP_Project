@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback | GroceryBasket eCommerce</title>
+    <meta name="description" content="" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nice-select/nice-select.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="./assets/plugin/OwlCarousel2-2.3.4/dist/assets/owl.theme.default.min.css">
+    <link rel="stylesheet" href="./assets/plugin/nouislider/nouislider.min.css">
+    <link rel="stylesheet" href="./assets/plugin/slick/slick.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        .btn-feedback-submit {
+            background-color: #82ae46;
+            border-color: #82ae46;
+            border-radius: 30px;
+            font-weight: 600;
+            letter-spacing: .5px;
+            padding: 12px 0;
+        }
+        .btn-feedback-submit:hover {
+            background-color: #6b9438;
+            border-color: #6b9438;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #82ae46;
+            box-shadow: 0 0 0 .2rem rgba(130,174,70,.25);
+        }
+        .section-title-green { color: #82ae46; font-weight: 700; }
+        .breadcrumb-item a   { color: #82ae46; }
+    </style>
+</head>
+<body>
+
+<!-- ========== HEADER START ========== -->
+<header class="navigation shadow-sm border-bottom">
+    <div class="navbar-sticky">
+
+        <!-- Top Navbar (logo / search / icons) -->
+        <div class="navbar navbar-middle navbar-expand-lg mt-lg-3">
+            <div class="container">
+                <!-- Logo -->
+                <a class="navbar-brand flex-shrink-0" href="index.html">
+                    <img src="./assets/images/logo.png" class="logo main-logo" alt="eCommerce HTML Template">
+                </a>
+                <!-- Search bar (desktop) -->
+                <div class="input-group d-none d-lg-flex me-5">
+                    <input id="searchInput" class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                    <select id="searchSelect" class="form-select flex-shrink-0" style="max-width: 11rem;">
+                        <option>All categories</option>
+                        <option>Fruits &amp; Vegetables</option>
+                        <option>Cuts &amp; Sprouts</option>
+                        <option>Exotic Fruits</option>
+                        <option>Flower Bouquets</option>
+                        <option>Fresh Fruits</option>
+                        <option>Herbs &amp; Seasonings</option>
+                        <option>Organic Fruits</option>
+                        <option>Fresh Vegetables</option>
+                    </select>
+                    <button type="button" class="btn btn-primary bg-gradient d-none d-lg-block">Search</button>
+                </div>
+                <!-- Action icons -->
+                <div class="list-inline d-flex">
+                    <div class="list-inline-item me-4">
+                        <a href="login.html" class="text-muted">
+                            <i class="bi bi-person"></i>
+                        </a>
+                    </div>
+                    <div class="list-inline-item me-4">
+                        <a href="wishlist.html" class="text-muted position-relative">
+                            <i class="bi bi-heart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                5<span class="visually-hidden">wishlist items</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="list-inline-item me-4">
+                        <a class="text-muted position-relative" href="cart.html">
+                            <i class="bi bi-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success">
+                                1<span class="visually-hidden">cart items</span>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="list-inline-item d-inline-block d-lg-none">
+                        <button class="navbar-toggler border-0 collapsed" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#navbar-default"
+                                aria-controls="navbar-default" aria-label="Toggle navigation">
+                            <i class="bi bi-text-indent-left"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Top Navbar -->
+
+        <!-- Main green nav bar -->
+        <nav class="navbar navbar-expand-lg navbar-light navbar-default py-lg-2 py-md-0 py-0 py-sm-0 bg-color mt-lg-3"
+             aria-label="Offcanvas navbar large">
+            <div class="container">
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="navbar-default"
+                     aria-labelledby="navbar-defaultLabel">
+                    <div class="offcanvas-header pb-1">
+                        <a href="index.html">
+                            <img src="./assets/images/logo.png" class="logo" alt="eCommerce HTML Template">
+                        </a>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <!-- Mobile search -->
+                        <div class="d-block d-lg-none mb-4">
+                            <div class="input-group me-5">
+                                <input class="form-control py-10 px-20" type="text" placeholder="Search for products">
+                                <select class="form-select flex-shrink-0" style="max-width: 11rem;">
+                                    <option>All categories</option>
+                                    <option>Fruits &amp; Vegetables</option>
+                                    <option>Notebooks</option>
+                                    <option>Smartphones</option>
+                                    <option>TV, Monitors</option>
+                                    <option>Cameras</option>
+                                    <option>Headphones</option>
+                                    <option>Storage</option>
+                                </select>
+                                <button type="button" class="btn btn-primary bg-gradient">Search</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <ul class="navbar-nav align-items-center">
+
+                                <!-- Home -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link" href="index.html">Home</a>
+                                </li>
+
+                                <!-- Shop -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="shop.html">Shop Page - Filter</a></li>
+                                        <li><a class="dropdown-item" href="shop-single.html">Shop Single</a></li>
+                                        <li><a class="dropdown-item" href="wishlist.html">Shop Wishlist</a></li>
+                                        <li><a class="dropdown-item" href="cart.html">Shop Cart</a></li>
+                                        <li><a class="dropdown-item" href="checkout.html">Shop Checkout</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Mega menu -->
+                                <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Mega menu</a>
+                                    <div class="dropdown-menu pb-0">
+                                        <div class="row p-2 p-lg-4">
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Fruits &amp; Vegetables</h6>
+                                                <a class="dropdown-item" href="#">Cuts &amp; Sprouts</a>
+                                                <a class="dropdown-item" href="#">Exotic Fruits &amp; Veggies</a>
+                                                <a class="dropdown-item" href="#">Flower Bouquets, Bunches</a>
+                                                <a class="dropdown-item" href="#">Fresh Fruits</a>
+                                                <a class="dropdown-item" href="#">Fresh Vegetables</a>
+                                                <a class="dropdown-item" href="#">Herbs &amp; Seasonings</a>
+                                                <a class="dropdown-item" href="#">Organic Fruits</a>
+                                                <a class="dropdown-item" href="#">Organic Vegetables</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Foodgrains, Oil &amp; Masala</h6>
+                                                <a class="dropdown-item" href="#">Atta, Flours &amp; Sooji</a>
+                                                <a class="dropdown-item" href="#">Dals &amp; Pulses</a>
+                                                <a class="dropdown-item" href="#">Dry Fruits</a>
+                                                <a class="dropdown-item" href="#">Edible Oils &amp; Ghee</a>
+                                                <a class="dropdown-item" href="#">Masalas &amp; Spices</a>
+                                                <a class="dropdown-item" href="#">Organic Staples</a>
+                                                <a class="dropdown-item" href="#">Rice &amp; Rice Products</a>
+                                                <a class="dropdown-item" href="#">Salt, Sugar &amp; Jaggery</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+                                                <h6 class="text-primary ps-3">Bakery, Cakes &amp; Dairy</h6>
+                                                <a class="dropdown-item" href="#">Appliances &amp; Electricals</a>
+                                                <a class="dropdown-item" href="#">Breads &amp; Buns</a>
+                                                <a class="dropdown-item" href="#">Cakes &amp; Pastries</a>
+                                                <a class="dropdown-item" href="#">Cookies, Rusk &amp; Khari</a>
+                                                <a class="dropdown-item" href="#">Dairy</a>
+                                                <a class="dropdown-item" href="#">Gourmet Breads</a>
+                                                <a class="dropdown-item" href="#">Ice Creams &amp; Desserts</a>
+                                                <a class="dropdown-item" href="#">Non Dairy</a>
+                                            </div>
+                                            <div class="col-lg-3 col-12 mb-4 mb-lg-0 menu-offer">
+                                                <div class="position-relative shine">
+                                                    <img src="./assets/images/category/special-offer.png"
+                                                         class="rounded w-100" alt="Special Offer">
+                                                    <div class="position-absolute ps-6 mt-8 top-0 p-4">
+                                                        <h5 class="mb-0">Dont miss this<br>offer today.</h5>
+                                                        <a href="#" class="btn btn-cart btn-sm mt-3">Shop Now</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- Pages  (Feedback added here) -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="blog.html">Blog</a></li>
+                                        <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
+                                        <li><a class="dropdown-item" href="about.html">About us</a></li>
+                                        <li><a class="dropdown-item" href="contact.html">Contact</a></li>
+                                        <li><a class="dropdown-item active" href="feedback.html">Feedback</a></li>
+                                        <li><a class="dropdown-item" href="allReviews.html">All Reviews</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Account -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="login.html">Sign in</a></li>
+                                        <li><a class="dropdown-item" href="signup.html">Signup</a></li>
+                                        <li><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
+                                    </ul>
+                                </li>
+
+                                <!-- Admin -->
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button"
+                                       data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="admin.html">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="productListing.html">View Inventory</a></li>
+                                        <li><a class="dropdown-item" href="addProduct.html">Add Product</a></li>
+                                        <li><a class="dropdown-item" href="productSearch.html">Search Product</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item dropdown w-100 w-lg-auto">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Feedback</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="Feedback.html">Feedback</a></li>
+                                        <li><a class="dropdown-item" href="Allreviews.html">Feedback review</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- /Main green nav bar -->
+
+    </div>
+</header>
+<!-- ========== HEADER END ========== -->
+
+
+<main>
+    <!-- Breadcrumb -->
+    <div class="mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Feedback</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== FEEDBACK FORM SECTION ===== -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+
+                    <h1 class="section-title-green mb-1 text-center">Give our service Feedback</h1>
+                    <p class="text-center text-muted mb-4" style="font-size:18px;">
+                        Your experience helps us serve you better.
+                    </p>
+
+                    <!-- Alert box — hidden until submit -->
+                    <div id="alertBox" class="alert d-none mb-3" role="alert"></div>
+
+                    <div class="card shadow-sm border-0 p-4"
+                         style="border-radius:12px; border-top:4px solid #82ae46 !important;">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Full Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" id="fbName" class="form-control"
+                                   placeholder="e.g. Kasun Perera">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                Email Address <span class="text-danger">*</span>
+                            </label>
+                            <input type="email" id="fbEmail" class="form-control"
+                                   placeholder="e.g. kasun@example.com">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                How would you rate our service?
+                            </label>
+                            <select id="fbRating" class="form-select">
+                                <option value="5">★★★★★ (5 - Excellent)</option>
+                                <option value="4">★★★★☆ (4 - Good)</option>
+                                <option value="3">★★★☆☆ (3 - Average)</option>
+                                <option value="2">★★☆☆☆ (2 - Poor)</option>
+                                <option value="1">★☆☆☆☆ (1 - Terrible)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                Your Review <span class="text-danger">*</span>
+                            </label>
+                            <textarea id="fbMessage" class="form-control" rows="5"
+                                      placeholder="Share your experience with us..."></textarea>
+                        </div>
+
+                        <button id="submitBtn" onclick="submitFeedback()"
+                                class="btn btn-primary btn-feedback-submit w-100 text-white">
+                            Submit Feedback
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ===== END FEEDBACK FORM SECTION ===== -->
+
+</main>
+
+
+<!-- ========== FEATURE STRIP (matches index.html exactly) ========== -->
+<div class="feature-section mt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="white-bg">
+                    <div class="row">
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/delivery-truck.png" class="w-100" alt="Free Shipping">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Free Shipping</h4>
+                                    <p>On orders over&nbsp;<strong>Rs 50.</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/loan.png" class="w-100" alt="Money Back">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Money Back</h4>
+                                    <p>Money back in 7 days.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/credit-card.png" class="w-100" alt="Secure Checkout">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Secure Checkout</h4>
+                                    <p>100% Payment Secure.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-20 col-12 col-sm-12 col-md-6 col-lg-3 d-flex justify-content-center">
+                            <div class="feature-item">
+                                <div class="feature-icon">
+                                    <img src="./assets/images/icon/customer-service.png" class="w-100" alt="Online Support">
+                                </div>
+                                <div class="feature-info pt-3 ps-2">
+                                    <h4>Online Support</h4>
+                                    <p>Ensure the product quality</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ========== END FEATURE STRIP ========== -->
+
+
+<!-- ========== FOOTER (matches index.html exactly) ========== -->
+<footer class="mt-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4 mb-md-0">
+                <div class="row">
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="footer_logo">
+                            <img loading="lazy" src="./assets/images/logo.png" class="logo" alt="easy shop">
+                        </div>
+                        <div class="mt-4">
+                            <p>Lorem ipsum, or lipsum as it is sometimes kno wn, is dummy text used in laying out print,
+                                gra phic or web designs the passage.</p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <div class="footer_newsletter pe-lg-5">
+                            <h4 class="text-uppercase">Newsletter</h4>
+                            <div class="input-group">
+                                <input class="form-control w-50" type="text" placeholder="Your email address">
+                                <button type="button" class="btn btn-primary bg-gradient">Subscribe</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 mb-3 mb-md-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="footer_menu">
+                            <h4 class="footer_title">My Account</h4>
+                            <ul class="m-0 p-0 list-unstyled">
+                                <li><a href="#">Orders</a></li>
+                                <li><a href="#">Wishlist</a></li>
+                                <li><a href="#">Track Order</a></li>
+                                <li><a href="#">Manage Account</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="footer_menu">
+                            <h4 class="footer_title">Information</h4>
+                            <ul class="m-0 p-0 list-unstyled">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Return Policy</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="footer_download">
+                    <div class="row">
+                        <div class="col-lg-6 col-lg-12">
+                            <h4 class="footer_title">Contact</h4>
+                            <div class="footer_contact">
+                                <p>
+                                    <span class="icn"><i class="bi bi-geo-alt"></i></span>
+                                    Widgetify Inc. <br>
+                                    456 Gadget Avenue
+                                    Techtown, TX 67890 <br>
+                                    United States of America
+                                </p>
+                                <p class="phn">
+                                    <span class="icn"><i class="bi bi-telephone"></i></span>
+                                    (987) 654-3210, (555) 123-4567
+                                </p>
+                                <p class="eml">
+                                    <span class="icn"><i class="bi bi-envelope"></i></span>
+                                    info@example.com
+                                </p>
+                            </div>
+                        </div>
+                        <div class="footer_social col-lg-6 col-lg-12">
+                            <div class="footer_icon d-flex mt-1">
+                                <a href="#" class="facebook pe-3"><i class="bi bi-facebook"></i></a>
+                                <a href="#" class="twitter pe-3"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="instagram pe-3"><i class="bi bi-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- ========== END FOOTER ========== -->
+
+
+<!-- Scripts — identical order to every other page in the project -->
+<script src="./assets/js/jquery-3.6.0.min.js"></script>
+<script src="./assets/js/bootstrap.bundle.min.js"></script>
+<script src="./assets/js/jquery.ez-plus.js"></script>
+<script src="./assets/plugin/nice-select/jquery.nice-select.min.js"></script>
+<script src="./assets/plugin/OwlCarousel2-2.3.4/dist/owl.carousel.min.js"></script>
+<script src="./assets/plugin/nouislider/nouislider.min.js"></script>
+<script src="./assets/plugin/slick/slick.min.js"></script>
+<script src="./assets/js/timer.js"></script>
+<script src="./assets/js/main.js"></script>
+
+<!-- ===== FEEDBACK SUBMIT LOGIC ===== -->
+<script>
+    /*
+     * HOW THIS CONNECTS TO THE JAVA BACKEND
+     * ─────────────────────────────────────
+     * POST /api/feedback  →  FeedbackController.java (@PostMapping("/feedback"))
+     *   →  FeedbackService.java  →  writes to feedbacks.txt:
+     *       2026-05-14T10:30,Kasun Perera,kasun@mail.com,5,Great product!
+     *
+     * Ensure the Spring Boot app is running and access this page via:
+     * http://localhost:8080/feedback.html
+     */
+    const API_BASE = '/api';
+
+    async function submitFeedback() {
+        const name     = document.getElementById('fbName').value.trim();
+        const email    = document.getElementById('fbEmail').value.trim();
+        const rating   = document.getElementById('fbRating').value;
+        const message  = document.getElementById('fbMessage').value.trim();
+        const btn      = document.getElementById('submitBtn');
+
+        // Client-side validation
+        if (!name || !email || !message) {
+            showAlert('warning', 'Please fill in all required fields.');
+            return;
+        }
+        if (!email.includes('@')) {
+            showAlert('warning', 'Please enter a valid email address.');
+            return;
+        }
+
+        btn.disabled    = true;
+        btn.textContent = 'Posting...';
+
+        try {
+            // Field names must match Feedback.java getters: getName(), getEmail(), getRating(), getMessage()
+            const response = await fetch(`${API_BASE}/feedback`, {
+                method : 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body   : JSON.stringify({ name, email, rating, message })
+            });
+
+            const text = await response.text();
+
+            if (response.ok) {
+                // Redirect to the All Reviews page so the user sees their new post
+                // The ?submitted=1 flag triggers a success toast on that page
+                window.location.href = 'allReviews.html?submitted=1';
+            } else {
+                showAlert('danger', '&#10007; ' + text);
+            }
+
+        } catch (err) {
+            showAlert('danger',
+                'Could not connect to the server. ' +
+                'Make sure Spring Boot is running on port 8080.');
+        } finally {
+            btn.disabled    = false;
+            btn.textContent = 'Post Review';
+        }
+    }
+
+    function showAlert(type, msg) {
+        const box     = document.getElementById('alertBox');
+        box.className = 'alert alert-' + type;
+        box.innerHTML = msg;
+        box.classList.remove('d-none');
+        if (type === 'success') {
+            setTimeout(() => box.classList.add('d-none'), 5000);
+        }
+    }
+</script>
+
+</body>
+</html>
