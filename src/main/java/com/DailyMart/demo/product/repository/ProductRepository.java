@@ -32,7 +32,7 @@ public class ProductRepository {
 
     /**
      * READ: Loads all products from the text file.
-     * Parses each CSV line back into either FreshProduct or PackagedProduct objects.
+     * Parses each pipe-separated line back into either FreshProduct or PackagedProduct objects.
      */
     public List<Product> getAllProducts() {
         List<Product> products = new ArrayList<>();
@@ -40,7 +40,7 @@ public class ProductRepository {
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
-                String[] data = line.split(",");
+                String[] data = line.split("\\|");
                 if (data.length >= 6) {
                     String id = data[0];
                     String name = data[1];
@@ -67,7 +67,8 @@ public class ProductRepository {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println("Error parsing products.txt: " + e.getMessage());
             e.printStackTrace();
         }
         return products;

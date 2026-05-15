@@ -23,7 +23,7 @@ public class FreshProduct extends Product {
      */
     @Override
     public String toFileString() {
-        return String.format("%s,%s,%s,%s,%s,%s,%s", 
+        return String.format("%s|%s|%s|%s|%s|%s|%s", 
                 getId(), getName(), getPrice(), getStock(), getCategory(), 
                 (getImageUrl() == null || getImageUrl().isEmpty() ? " " : getImageUrl()), 
                 getWeight());

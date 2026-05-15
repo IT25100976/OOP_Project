@@ -79,6 +79,29 @@
         /* High Contrast Overrides */
         h1, h2, h3, h4, h5, h6, .fw-bold { color: #ffffff !important; }
         .text-muted { color: var(--text-muted) !important; opacity: 1 !important; }
+
+        /* Premium Toast Notifications */
+        #notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 9999;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            color: white;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #notification.show { transform: translateX(0); }
+        #notification.success { background: #10b981; }
+        #notification.error { background: #ef4444; }
+        .notif-icon { font-size: 1.2rem; }
     </style>
 </head>
 <body>
@@ -181,7 +204,7 @@
                                 <div class="badge-custom ${p.category === 'Fresh' ? 'fresh' : (p.category === 'Packaged' ? 'packaged' : '')}">${p.category}</div>
                                 
                                 <div class="text-center mb-3">
-                                    <img src="${img}" class="rounded shadow-sm" style="height: 120px; width: 100%; object-fit: cover;" alt="${p.name}">
+                                    <img src="${img}" class="rounded shadow-sm" style="height: 200px; width: 100%; object-fit: cover; object-position: center;" alt="${p.name}">
                                 </div>
                                 
                                 <h3 class="product-title">${p.name}</h3>
@@ -272,9 +295,14 @@
 
         function showNotification(msg, isError = false) {
             const notif = document.getElementById('notification');
-            notif.innerText = msg;
-            notif.className = isError ? 'error show' : 'show';
-            setTimeout(() => { notif.className = ''; }, 3000);
+            const icon = isError ? 'bi-exclamation-triangle-fill' : 'bi-check-circle-fill';
+            
+            notif.innerHTML = `<i class="bi ${icon} notif-icon"></i> <span>${msg}</span>`;
+            notif.className = isError ? 'error show' : 'success show';
+            
+            setTimeout(() => { 
+                notif.classList.remove('show');
+            }, 4000);
         }
     </script>
     <script src="./assets/js/bootstrap.bundle.min.js"></script>

@@ -28,8 +28,12 @@ public class ProductController {
      * Returns a JSON list of both Fresh and Packaged items.
      */
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(productRepository.getAllProducts());
+    public ResponseEntity<?> getAllProducts() {
+        try {
+            return ResponseEntity.ok(productRepository.getAllProducts());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error loading products: " + e.getMessage());
+        }
     }
 
     /**
@@ -58,6 +62,14 @@ public class ProductController {
             // Assign a simple ID based on current timestamp for uniqueness
             product.setId("F" + System.currentTimeMillis());
             product.setCategory("Fresh"); // Explicitly set for robustness
+
+            // Automatic Image Generation: Use loremflickr if no image URL is provided
+            if (product.getImageUrl() == null || product.getImageUrl().trim().isEmpty()) {
+                String keyword = product.getName().replaceAll("\\s+", ",");
+                // For Fresh items, add 'vegetable' and 'fruit' tags for better accuracy
+                product.setImageUrl("https://loremflickr.com/400/400/" + keyword + ",vegetable,fruit");
+            }
+
             productRepository.addProduct(product);
             return ResponseEntity.ok("Fresh Product added successfully!");
         } catch (Exception e) {
@@ -73,6 +85,14 @@ public class ProductController {
         try {
             product.setId("P" + System.currentTimeMillis());
             product.setCategory("Packaged"); // Explicitly set for robustness
+
+            // Automatic Image Generation: Use loremflickr if no image URL is provided
+            if (product.getImageUrl() == null || product.getImageUrl().trim().isEmpty()) {
+                String keyword = product.getName().replaceAll("\\s+", ",");
+                // For Packaged items, add 'grocery' tag
+                product.setImageUrl("https://loremflickr.com/400/400/" + keyword + ",grocery");
+            }
+
             productRepository.addProduct(product);
             return ResponseEntity.ok("Packaged Product added successfully!");
         } catch (Exception e) {
