@@ -127,58 +127,14 @@
                                             <li><a class="dropdown-item" href="checkout.html">Shop Checkout</a></li>
                                         </ul>
                                     </li>
-                                    <li class="nav-item dropdown w-100 w-lg-auto dropdown-fullwidth">
-                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mega menu</a>
-                                        <div class="dropdown-menu pb-0">
-                                            <div class="row p-2 p-lg-4">
-                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                                                    <h6 class="text-primary ps-3">Fruits & Vegetables</h6>
-                                                    <a class="dropdown-item" href="#">Cuts & Sprouts</a>
-                                                    <a class="dropdown-item" href="#">Exotic Fruits & Veggies</a>
-                                                    <a class="dropdown-item" href="#">Flower Bouquets, Bunches</a>
-                                                    <a class="dropdown-item" href="#">Fresh Fruits</a>
-                                                    <a class="dropdown-item" href="#">Fresh Vegetables</a>
-                                                    <a class="dropdown-item" href="#">Herbs & Seasonings</a>
-                                                    <a class="dropdown-item" href="#">Organic Fruits</a>
-                                                    <a class="dropdown-item" href="#">Organic Vegetables</a>
-                                                </div>
-                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                                                    <h6 class="text-primary ps-3">Foodgrains, Oil & Masala</h6>
-                                                    <a class="dropdown-item" href="#">Atta, Flours & Sooji</a>
-                                                    <a class="dropdown-item" href="#">Dals & Pulses</a>
-                                                    <a class="dropdown-item" href="#">Dry Fruits</a>
-                                                    <a class="dropdown-item" href="#">Edible Oils & Ghee</a>
-                                                    <a class="dropdown-item" href="#">Masalas & Spices</a>
-                                                    <a class="dropdown-item" href="#">Organic Staples</a>
-                                                    <a class="dropdown-item" href="#">Rice & Rice Products</a>
-                                                    <a class="dropdown-item" href="#">Salt, Sugar & Jaggery</a>
-                                                </div>
-                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0">
-                                                    <h6 class="text-primary ps-3">Bakery, Cakes & Dairy</h6>
-                                                    <a class="dropdown-item" href="#">Appliances & Electricals</a>
-                                                    <a class="dropdown-item" href="#">Breads & Buns</a>
-                                                    <a class="dropdown-item" href="#">Cakes & Pastries</a>
-                                                    <a class="dropdown-item" href="#">Cookies, Rusk & Khari</a>
-                                                    <a class="dropdown-item" href="#">Dairy</a>
-                                                    <a class="dropdown-item" href="#">Gourmet Breads</a>
-                                                    <a class="dropdown-item" href="#">Ice Creams & Desserts</a>
-                                                    <a class="dropdown-item" href="#">Non Dairy</a>
-                                                </div>
-                                                <div class="col-lg-3 col-12 mb-4 mb-lg-0 menu-offer">
-                                                    <div class="position-relative shine">
-                                                        <img src="./assets/images/category/special-offer.png" class="rounded w-100" alt="eCommerce HTML Template">
-                                                        <div class="position-absolute ps-6 mt-8 top-0 p-4">
-                                                            <h5 class="mb-0">
-                                                                Dont miss this
-                                                                <br>
-                                                                offer today.
-                                                            </h5>
-                                                            <a href="#" class="btn btn-cart btn-sm mt-3">Shop Now</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <li class="nav-item dropdown w-100 w-lg-auto">
+                                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Products</a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="shop.html?category=Fresh">Fresh Products</a></li>
+                                            <li><a class="dropdown-item" href="shop.html?category=Packaged">Packaged Products</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="shop.html">All Products</a></li>
+                                        </ul>
                                     </li>
                                     <li class="nav-item dropdown w-100 w-lg-auto">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
@@ -876,6 +832,7 @@
         window.addEventListener('DOMContentLoaded', async () => {
             const urlParams = new URLSearchParams(window.location.search);
             const searchQuery = urlParams.get('search');
+            const categoryQuery = urlParams.get('category');
             const container = document.querySelector('.shop-section .product .row');
             if (!container) return;
 
@@ -893,7 +850,7 @@
                             <div class="card product-card h-100 shadow-sm border-0">
                                 <div class="card-body pt-3 pb-0 text-center position-relative">
                                     <a href="shop-single.html">
-                                        <img src="${img}" class="img-fluid rounded mb-3" style="height: 160px; width: 100%; object-fit: cover;" alt="${p.name}">
+                                        <img src="${img}" class="img-fluid rounded mb-3" style="height: 220px; width: 100%; object-fit: cover;" alt="${p.name}">
                                     </a>
                                     <div class="icons position-absolute top-0 end-0 mt-2 me-2">
                                         <a href="javascript:void(0)" onclick="addToWishlist('${p.id}', '${safeName}', ${p.price}, '${img}')" title="Wishlist" class="text-muted"><i class="bi bi-heart"></i></a>
@@ -937,8 +894,20 @@
                     console.error("Error searching products:", e);
                     container.innerHTML = '<p class="text-center w-100">Error connecting to backend.</p>';
                 }
+            } else if (categoryQuery) {
+                // 2. Handle CATEGORY mode
+                try {
+                    const res = await fetch('/api/products');
+                    const products = await res.json();
+                    container.innerHTML = '<div class="col-12 mb-4"><h3 class="text-center">Category: ' + categoryQuery + '</h3></div>';
+                    const filtered = products.filter(p => p.category === categoryQuery);
+                    renderProducts(filtered, categoryQuery);
+                } catch(e) {
+                    console.error("Error loading products by category:", e);
+                    container.innerHTML = '<p class="text-center w-100">Error connecting to backend.</p>';
+                }
             } else {
-                // 2. Handle ALL PRODUCTS mode (Default)
+                // 3. Handle ALL PRODUCTS mode (Default)
                 try {
                     const res = await fetch('/api/products');
                     const products = await res.json();
