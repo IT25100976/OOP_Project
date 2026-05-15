@@ -47,15 +47,21 @@ public class OrderController {
             order.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             order.setStatus("Pending");
 
-            // 2. Process Items and Deduct Stock
+            // 2. Process Items, Fetch Names, and Deduct Stock
             for (OrderItem item : order.getItems()) {
                 Product p = productRepository.getProductById(item.getProductId());
                 if (p != null) {
+                    // Always set/update product name from the definitive repository
+                    item.setProductName(p.getName());
+                    
                     if (p.getStock() < item.getQuantity()) {
                         return ResponseEntity.badRequest().body("Insufficient stock for: " + p.getName());
                     }
                     p.setStock(p.getStock() - item.getQuantity());
                     productRepository.updateProduct(p);
+                } else if (item.getProductName() == null || item.getProductName().isEmpty()) {
+                    // Fallback if product not found in repo (shouldn't happen with valid IDs)
+                    item.setProductName("Product");
                 }
             }
 

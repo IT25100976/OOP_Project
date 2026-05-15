@@ -48,12 +48,20 @@ public class OrderRepository {
                     order.setStatus(data[5]);
                     order.setDate(data[6]);
                     
-                    // Parse Items: productId:qty:unitPrice|...
+                    // Parse Items: productId:productName:qty:unitPrice|...
                     String itemsStr = data[7];
                     List<OrderItem> items = Arrays.stream(itemsStr.split("\\|"))
                             .map(s -> {
                                 String[] itemData = s.split(":");
-                                return new OrderItem(itemData[0], "Product", Double.parseDouble(itemData[2]), Integer.parseInt(itemData[1]));
+                                if (itemData.length >= 4) {
+                                    // New format: productId:productName:qty:unitPrice
+                                    return new OrderItem(itemData[0], itemData[1].replace(";", ":"), Double.parseDouble(itemData[3]), Integer.parseInt(itemData[2]));
+                                } else {
+                                    // Legacy format: productId:qty:unitPrice
+                                    // Fallback to "Product" or actual name if we can find it (for now just use "Product (ID)")
+                                    String fallbackName = "Product (" + itemData[0] + ")";
+                                    return new OrderItem(itemData[0], fallbackName, Double.parseDouble(itemData[2]), Integer.parseInt(itemData[1]));
+                                }
                             })
                             .collect(Collectors.toList());
                     order.setItems(items);

@@ -61,7 +61,15 @@ public class   Order {
      */
     public String serializeItems() {
         return items.stream()
-                .map(item -> String.format("%s:%d:%.2f", item.getProductId(), item.getQuantity(), item.getUnitPrice()))
+                .map(item -> {
+                    String name = item.getProductName();
+                    if (name == null || name.isEmpty()) name = "Product";
+                    return String.format("%s:%s:%d:%.2f", 
+                        item.getProductId(), 
+                        name.replace(":", ";"), // Escape colons
+                        item.getQuantity(), 
+                        item.getUnitPrice());
+                })
                 .collect(Collectors.joining("|"));
     }
 
