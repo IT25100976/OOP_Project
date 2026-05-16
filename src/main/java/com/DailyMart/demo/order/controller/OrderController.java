@@ -40,7 +40,7 @@ public class OrderController {
      * Decrements stock for each item.
      */
     @PostMapping
-    public ResponseEntity<String> placeOrder(@RequestBody Order order) {
+    public ResponseEntity<?> placeOrder(@RequestBody Order order) {
         try {
             // 1. Generate ID and Date
             order.setOrderId("ORD" + System.currentTimeMillis());
@@ -68,7 +68,7 @@ public class OrderController {
             // 3. Save Order
             orderRepository.addOrder(order);
 
-            return ResponseEntity.ok("Order placed successfully with ID: " + order.getOrderId());
+            return ResponseEntity.ok(order);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }

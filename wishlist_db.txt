@@ -1,4 +1,2 @@
 0b25d716-6514-4475-83d0-f439f18fe3dd|F1778059880613|Green apple|5.0|1|./assets/images/product/Apple-first.png
-9318d49e-e5a7-4380-87e0-77d5909d6ab8|F1778059880613|Green apple|5.0|1|./assets/images/product/Apple-first.png
-dd720079-227a-4f2e-8f2e-f0e3826e829d|P016|Orange|9.0|1|./assets/images/product/Orange-first.png
-dd720079-227a-4f2e-8f2e-f0e3826e829d|F1778914087034|fish|200.0|1|./assets/images/product/fish-first.png
+0b25d716-6514-4475-83d0-f439f18fe3dd|P1778577953982|Sugar|100.0|1|https://img.magnific.com/premium-photo/close-up-sugar-sack-against-white-background_1048944-4821660.jpg

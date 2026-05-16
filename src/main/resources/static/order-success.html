@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | DailyMart</title>
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.ico">
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./assets/font/bootstrap-icons-1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <style>
+        :root {
+            --primary-color: #28a745;
+            --secondary-color: #1a7c31;
+            --accent-color: #f8f9fa;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .success-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .order-card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 850px;
+            overflow: hidden;
+            border: none;
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .card-header-vibrant {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .checkmark-container {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .receipt-body {
+            padding: 40px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .info-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: #333;
+            font-size: 15px;
+        }
+
+        .table-premium {
+            margin-bottom: 30px;
+        }
+
+        .table-premium th {
+            border: none;
+            color: #888;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+            padding-bottom: 15px;
+        }
+
+        .table-premium td {
+            vertical-align: middle;
+            padding: 15px 0;
+            border-top: 1px solid #f8f9fa;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .summary-footer {
+            background: var(--accent-color);
+            padding: 30px 40px;
+            border-radius: 0 0 24px 24px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .total-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .total-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .btn-home {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        /* Micro-interactions */
+        .order-card:hover .checkmark-container {
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-5px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-wrapper">
+        <div class="order-card">
+            <div class="card-header-vibrant">
+                <div class="checkmark-container">
+                    <i class="bi bi-patch-check"></i>
+                </div>
+                <h1 class="fw-bold mb-1">Order Confirmed!</h1>
+                <p class="mb-0 opacity-75">Thank you for choosing DailyMart</p>
+            </div>
+
+            <div class="receipt-body">
+                <div class="info-grid">
+                    <div>
+                        <span class="info-label">Order ID</span>
+                        <span class="info-value text-primary" id="displayOrderId">#---</span>
+                    </div>
+                    <div>
+                        <span class="info-label">Order Date</span>
+                        <span class="info-value" id="displayDate">---</span>
+                    </div>
+                    <div>
+                        <span class="info-label">Customer</span>
+                        <span class="info-value" id="displayCustomerName">---</span>
+                    </div>
+                    <div>
+                        <span class="info-label">Delivery To</span>
+                        <span class="info-value" id="displayAddress">---</span>
+                    </div>
+                </div>
+
+                <h6 class="info-label mb-4">Ordered Items</h6>
+                <div class="table-responsive">
+                    <table class="table table-premium">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItemsTable">
+                            <!-- Items Injected Here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 pt-4 border-top">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal</span>
+                        <span class="fw-bold" id="displaySubtotal">Rs 0.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-muted">Delivery Charges</span>
+                        <span class="fw-bold">Rs 40.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-footer d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="total-row mb-4 mb-md-0">
+                    <div class="me-4 text-center text-md-start">
+                        <span class="info-label">Total Amount Paid</span>
+                        <span class="total-amount" id="displayTotal">Rs 0.00</span>
+                    </div>
+                </div>
+                <div>
+                    <a href="index.html" class="btn-home">
+                         Home Page <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderData = JSON.parse(sessionStorage.getItem('lastOrder'));
+            
+            if (!orderData) {
+                // For direct testing if sessionStorage is empty
+                console.log("No order data found in session storage.");
+                return;
+            }
+
+            document.getElementById('displayOrderId').innerText = '#' + orderData.orderId;
+            document.getElementById('displayDate').innerText = orderData.date;
+            document.getElementById('displayCustomerName').innerText = orderData.customerName;
+            document.getElementById('displayAddress').innerText = orderData.address;
+
+            const tableBody = document.getElementById('orderItemsTable');
+            let subtotal = 0;
+
+            orderData.items.forEach(item => {
+                const lineTotal = item.unitPrice * item.quantity;
+                subtotal += lineTotal;
+
+                const row = `
+                    <tr>
+                        <td>
+                            <div class="product-name">${item.productName}</div>
+                            <small class="text-muted">Unit Price: Rs ${item.unitPrice.toFixed(2)}</small>
+                        </td>
+                        <td class="text-center fw-bold">x${item.quantity}</td>
+                        <td class="text-end fw-bold">Rs ${lineTotal.toFixed(2)}</td>
+                    </tr>
+                `;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            document.getElementById('displaySubtotal').innerText = 'Rs ' + subtotal.toFixed(2);
+            document.getElementById('displayTotal').innerText = 'Rs ' + orderData.totalAmount.toFixed(2);
+        });
+    </script>
+</body>
+</html>

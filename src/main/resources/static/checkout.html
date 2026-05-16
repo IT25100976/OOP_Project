@@ -677,7 +677,7 @@
                 });
 
                 if (response.ok) {
-                    const msg = await response.text();
+                    const order = await response.json();
                     
                     // 4. Clear Cart on Backend
                     await fetch('/api/inventory/cart/clear', {
@@ -685,8 +685,9 @@
                         headers: API_HEADERS
                     });
 
-                    alert(msg);
-                    window.location.href = 'index.html';
+                    // Store order data for the success page
+                    sessionStorage.setItem('lastOrder', JSON.stringify(order));
+                    window.location.href = 'order-success.html';
                 } else {
                     const err = await response.text();
                     alert("Order Error: " + err);
