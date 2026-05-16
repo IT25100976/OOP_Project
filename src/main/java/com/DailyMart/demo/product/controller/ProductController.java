@@ -63,12 +63,7 @@ public class ProductController {
             product.setId("F" + System.currentTimeMillis());
             product.setCategory("Fresh"); // Explicitly set for robustness
 
-            // Automatic Image Generation: Use loremflickr if no image URL is provided
-            if (product.getImageUrl() == null || product.getImageUrl().trim().isEmpty()) {
-                String keyword = product.getName().replaceAll("\\s+", ",");
-                // For Fresh items, add 'vegetable' and 'fruit' tags for better accuracy
-                product.setImageUrl("https://loremflickr.com/400/400/" + keyword + ",vegetable,fruit");
-            }
+            // Automatic Image Generation removed as requested
 
             productRepository.addProduct(product);
             return ResponseEntity.ok("Fresh Product added successfully!");
@@ -86,12 +81,7 @@ public class ProductController {
             product.setId("P" + System.currentTimeMillis());
             product.setCategory("Packaged"); // Explicitly set for robustness
 
-            // Automatic Image Generation: Use loremflickr if no image URL is provided
-            if (product.getImageUrl() == null || product.getImageUrl().trim().isEmpty()) {
-                String keyword = product.getName().replaceAll("\\s+", ",");
-                // For Packaged items, add 'grocery' tag
-                product.setImageUrl("https://loremflickr.com/400/400/" + keyword + ",grocery");
-            }
+            // Automatic Image Generation removed as requested
 
             productRepository.addProduct(product);
             return ResponseEntity.ok("Packaged Product added successfully!");

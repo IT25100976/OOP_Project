@@ -212,7 +212,7 @@
                             <p>Sign up with our store to streamline your shopping experience! Enjoy faster checkout, save multiple shipping addresses, and easily track your orders—all from your personalized account.</p>
                         </div>
                         <div>
-                            <a href="#" class="btn btn-primary btn-top">Create An Account</a>
+                            <a href="signup.html" class="btn btn-primary btn-top">Create An Account</a>
                         </div>
                      </div>
                 </div>
@@ -340,7 +340,14 @@
                       if (response.ok) {
                           return response.text().then(msg => {
                               alert(msg);
-                              window.location.href = "index.html"; // Redirect to home on success
+                              localStorage.setItem('isLoggedIn', 'true');
+                              const redirect = localStorage.getItem('redirectAfterLogin');
+                              if (redirect) {
+                                  localStorage.removeItem('redirectAfterLogin');
+                                  window.location.href = redirect;
+                              } else {
+                                  window.location.href = "index.html"; // Redirect to home on success
+                              }
                           });
                       } else {
                           return response.text().then(msg => alert(msg));

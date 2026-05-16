@@ -16,9 +16,29 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<String> register(@RequestBody User user) {
+        // @RequestBody User user :: The browser sends a JSON object (firstName, lastName, email, password)
+        // Spring Boot automatically converts it into a User object and passes it here as 'user'
         try {
+            // Step 1: Load all existing users from users.txt into a Java List
+            // This lets us search through them to check for duplicates
+            List<User> allUsers = fileService.getAllUsers();
+
+            // Step 2: Check if any existing user has the same email as the new registration
+            // .equalsIgnoreCase() makes the check case-insensitive (e.g. "User@Mail.com" == "user@mail.com")
+            boolean emailExists = allUsers.stream()
+                    .anyMatch(u -> u.getEmail().equalsIgnoreCase(user.getEmail()));
+
+            // Step 3: If the email is already taken, reject the signup with a 409 Conflict status
+            // The frontend will read this error message and display it to the user
+            if (emailExists) {
+                return ResponseEntity.status(409).body("An account with this email already exists.");
+            }
+
+            // Step 4: Email is unique — save the new user to users.txt
             fileService.saveUser(user);
-            return ResponseEntity.ok("Success! User saved to text file.");
+
+            // Step 5: Return a success message; the frontend will redirect the user to login.html
+            return ResponseEntity.ok("Account created successfully!");
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }

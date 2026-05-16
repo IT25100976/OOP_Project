@@ -1,9 +1,1 @@
-F1778059880613|Green apple|5.0|16|Fresh|https://img.magnific.com/premium-photo/freshly-picked-green-apples-white-background_431161-39190.jpg|0.3
-F1778183171006|Orange|10.0|25|Fresh|./assets/images/product/Orange-first.png|0.35
-P1778577953982|Sugar|100.0|20|Packaged|https://img.magnific.com/premium-photo/close-up-sugar-sack-against-white-background_1048944-4821660.jpg|2027-10-12
-P1778578006554|Rice|120.0|12|Packaged|https://thumbs.dreamstime.com/b/long-rice-burlap-sack-wooden-spoon-inserted-top-ears-isolated-white-background-scoop-376113439.jpg|2027-12-15
-F1778735950120|Banana|70.0|12|Fresh|./assets/images/product/banana-first.png|0.25
-F1778813458995|Carrot|35.0|48|Fresh|https://img.magnific.com/premium-photo/carrots-vegetable-isolated-white-background_198067-86.jpg|0.25
-F1778814427249|Red apple|35.0|12|Fresh|./assets/images/product/Apple-first.png|0.09
-F1778818629769|Tomato|30.0|49|Fresh|https://img.magnific.com/premium-photo/fresh-tomatoes-white-background-closeups_1196934-589.jpg|0.1
-F1778824880891|Strawberry|25.0|43|Fresh|https://img.magnific.com/premium-photo/strawberries-isolated-white-background_1111504-5257.jpg?w=2000|0.09
+F1778914087034|fish|200.0|9|Fresh|./assets/images/product/fish-first.png|1.0

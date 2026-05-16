@@ -3,3 +3,6 @@ Deshan,Sandeep,Sandeep@my.sliit.lk,123123
 Shatish,Dileepa,dileepz@ex.com,123123
 sandeep,malgahamuduna,ggboys@gmail.com,123456
 sandeep,malgahamuduna,ggboys@gmail.com,12345
+dammika,dammika,dammika@dammika.lk,dammika
+dammika,dammika,dammika@dammika.lk,dammika
+deshan,deshan,deshan@hi.lk,123456

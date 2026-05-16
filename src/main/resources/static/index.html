@@ -150,9 +150,11 @@
                                     <li class="nav-item dropdown w-100 w-lg-auto">
                                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="login.html">Sign in</a></li>
-                                                <li><a class="dropdown-item" href="signup.html">Signup</a></li>
-                                                <li><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
+                                                <li id="nav-login"><a class="dropdown-item" href="login.html">Sign in</a></li>
+                                                <li id="nav-signup"><a class="dropdown-item" href="signup.html">Signup</a></li>
+                                                <li id="nav-forgot-password"><a class="dropdown-item" href="forgot-password.html">Forgot Password</a></li>
+                                                <li id="nav-divider"><hr class="dropdown-divider"></li>
+                                                <li id="nav-logout"><a class="dropdown-item" href="javascript:void(0);" onclick="logout()">Logout</a></li>
                                             </ul>
                                     </li>
                                     <li class="nav-item dropdown w-100 w-lg-auto">
@@ -186,6 +188,35 @@
     <!-- Header Section End -->
     
     <script>
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            alert('You have successfully logged out.');
+            window.location.reload();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const navLogin = document.getElementById('nav-login');
+            const navSignup = document.getElementById('nav-signup');
+            const navForgotPassword = document.getElementById('nav-forgot-password');
+            const navDivider = document.getElementById('nav-divider');
+            const navLogout = document.getElementById('nav-logout');
+            
+            if (isLoggedIn) {
+                if (navLogin) navLogin.style.display = 'none';
+                if (navSignup) navSignup.style.display = 'none';
+                if (navForgotPassword) navForgotPassword.style.display = 'none';
+                if (navDivider) navDivider.style.display = 'block';
+                if (navLogout) navLogout.style.display = 'block';
+            } else {
+                if (navLogin) navLogin.style.display = 'block';
+                if (navSignup) navSignup.style.display = 'block';
+                if (navForgotPassword) navForgotPassword.style.display = 'block';
+                if (navDivider) navDivider.style.display = 'none';
+                if (navLogout) navLogout.style.display = 'none';
+            }
+        });
+
         /**
          * Session and API Header Logic (Inlined from session.js)
          */
@@ -1497,7 +1528,7 @@
                             </a>
                             <div class="card-body pt-0">
                                <div class="icons">
-                                   <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                   <a href="javascript:void(0)" onclick="addToWishlist('P015', 'Tomato', 12.00, './assets/images/product/Tomato-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                            class="bi bi-heart"></i> </a>
                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                            class="bi bi-eye"></i></a>
@@ -1526,7 +1557,7 @@
                             </div>
                         </div>
                         <div class="product-footer">
-                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart('P015', 'Tomato', 12.00, './assets/images/product/Tomato-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                         </div>
                        </div>
                        <div class="card product-card mx-2 mb-3">
@@ -1536,7 +1567,7 @@
                             </a>
                             <div class="card-body pt-0">
                                <div class="icons">
-                                   <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                   <a href="javascript:void(0)" onclick="addToWishlist('P016', 'Orange', 9.00, './assets/images/product/Orange-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                            class="bi bi-heart"></i> </a>
                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                            class="bi bi-eye"></i></a>
@@ -1565,7 +1596,7 @@
                             </div>
                         </div>
                         <div class="product-footer">
-                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart('P016', 'Orange', 9.00, './assets/images/product/Orange-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                         </div>
                        </div>
                        <div class="card product-card mx-2 mb-3">
@@ -1575,7 +1606,7 @@
                             </a>
                             <div class="card-body pt-0">
                                <div class="icons">
-                                   <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                   <a href="javascript:void(0)" onclick="addToWishlist('P017', 'Strawberry', 10.00, './assets/images/product/Strawberry-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                            class="bi bi-heart"></i> </a>
                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                            class="bi bi-eye"></i></a>
@@ -1604,7 +1635,7 @@
                             </div>
                         </div>
                         <div class="product-footer">
-                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart('P017', 'Strawberry', 10.00, './assets/images/product/Strawberry-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                         </div>
                        </div>
                        <div class="card product-card mx-2 mb-3">
@@ -1614,7 +1645,7 @@
                             </a>
                             <div class="card-body pt-0">
                                <div class="icons">
-                                   <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                   <a href="javascript:void(0)" onclick="addToWishlist('P018', 'Apple', 12.00, './assets/images/product/Apple-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                            class="bi bi-heart"></i> </a>
                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                            class="bi bi-eye"></i></a>
@@ -1643,7 +1674,7 @@
                             </div>
                         </div>
                         <div class="product-footer">
-                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart('P018', 'Apple', 12.00, './assets/images/product/Apple-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                         </div>
                        </div>
                        <div class="card product-card mx-2 mb-3">
@@ -1653,7 +1684,7 @@
                             </a>
                             <div class="card-body pt-0">
                                <div class="icons">
-                                   <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
+                                   <a href="javascript:void(0)" onclick="addToWishlist('P019', 'Zucchini Yellow', 12.00, './assets/images/product/Zucchini-Yellow-first.png')" data-bs-toggle="tooltip" data-bs-placement="left" title="Wishlist"><i
                                            class="bi bi-heart"></i> </a>
                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick view"><i
                                            class="bi bi-eye"></i></a>
@@ -1682,7 +1713,7 @@
                             </div>
                         </div>
                         <div class="product-footer">
-                            <a href="cart.html" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
+                            <a href="javascript:void(0)" onclick="addToCart('P019', 'Zucchini Yellow', 12.00, './assets/images/product/Zucchini-Yellow-first.png')" class="d-block rounded py-2 text-center border mx-3 mb-3 btn-cart">Add to Cart</a>
                         </div>
                        </div>
                </div>
@@ -1722,7 +1753,7 @@
                                  </div>
                                 <div>
                                 <h2 class="h5 blog-title mt-3">
-                                    <a href="blog-single.html" class="text-inherit">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur voluptates excepturi enim!</a>
+                                    <a href="blog-single.html" class="text-inherit">10 Simple Ways to Incorporate More Fresh Greens into Your Daily Diet</a>
                                 </h2>
                                     <div class="text-muted mt-3">
                                         <a href="#" class="blog-btn">Read More</a>
@@ -1750,7 +1781,7 @@
                                  </div>
                                 <div>
                                 <h2 class="h5 blog-title mt-3">
-                                    <a href="blog-single.html" class="text-inherit">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur voluptates excepturi enim!</a>
+                                    <a href="blog-single.html" class="text-inherit">The Ultimate Guide to Selecting the Perfect Avocado Every Time</a>
                                 </h2>
                                     <div class="text-muted mt-3">
                                         <a href="#" class="blog-btn">Read More</a>
@@ -1778,7 +1809,7 @@
                                  </div>
                                 <div>
                                 <h2 class="h5 blog-title mt-3">
-                                    <a href="blog-single.html" class="text-inherit">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur voluptates excepturi enim!</a>
+                                    <a href="blog-single.html" class="text-inherit">Farm to Table: How Local Sourcing Benefits Your Health and the Environment</a>
                                 </h2>
                                     <div class="text-muted mt-3">
                                         <a href="#" class="blog-btn">Read More</a>
@@ -1806,7 +1837,7 @@
                                  </div>
                                 <div>
                                 <h2 class="h5 blog-title mt-3">
-                                    <a href="blog-single.html" class="text-inherit">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequatur voluptates excepturi enim!</a>
+                                    <a href="blog-single.html" class="text-inherit">5 Quick and Nutritious Weeknight Dinners Using Pantry Staples</a>
                                 </h2>
                                     <div class="text-muted mt-3">
                                         <a href="#" class="blog-btn">Read More</a>
@@ -1889,7 +1920,7 @@
                                 <img loading="lazy" src="./assets/images/logo.png" class="logo" alt="easy shop">
                             </div>
                             <div class="mt-4">
-                                <p>Lorem ipsum, or lipsum as it is sometimes kno wn, is dummy text used in laying out print, gra phic or web designs the passage.</p>
+                                <p>GroceryBasket is your premier destination for fresh, high-quality, and sustainably sourced produce delivered right to your door.</p>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-12">

@@ -321,11 +321,11 @@
     <script src="./assets/js/main.js"></script>
 
 
-    //Connecting the Frontend signup.html to the backend
+    <!-- Connecting the Frontend signup.html to the backend -->
     <script>
         const form = document.querySelector('form');
         form.addEventListener('submit', (e) => {
-            e.preventDefault(); // Stop page from refreshing
+            e.preventDefault();
 
             const data = {
                 firstName: document.getElementById('firstName').value,
@@ -339,9 +339,20 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-                .then(res => res.text())
-                .then(msg => alert(msg))
-                .catch(err => console.error(err));
+            .then(res => {
+                if (res.ok) {
+                    // Registration successful — redirect to login page
+                    alert('Account created successfully! Please log in.');
+                    window.location.href = 'login.html';
+                } else {
+                    // Show the error message from the backend (e.g. duplicate email)
+                    return res.text().then(msg => alert('Registration failed: ' + msg));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Something went wrong. Please try again.');
+            });
         });
     </script>
 

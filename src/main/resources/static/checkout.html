@@ -623,6 +623,12 @@
 
         async function submitOrder(e) {
             e.preventDefault();
+
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                localStorage.setItem('redirectAfterLogin', 'checkout.html');
+                window.location.href = 'login.html';
+                return;
+            }
             
             // 1. Get Cart Items First
             let cart = [];
